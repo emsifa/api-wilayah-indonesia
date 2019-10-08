@@ -1,5 +1,5 @@
 function getCurrentUrl() {
-  const url = location.href
+  const url = location.href.split('?').shift()
   if (url.match(/\/$/)) {
     return url.replace(/\/$/, '')
   }
