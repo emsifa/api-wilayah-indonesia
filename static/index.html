@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>API Publik Data Wilayah Indonesia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div id="app" class="container-fluid my-5">
+    <div class="row d-flex align-items-center justify-content-center" style="height: 100vh">
+      <div class="col-lg-7 col-md-7 col-sm-10 col-11">
+        <h3 class="text-muted"><strong>API PUBLIK</strong></h3>
+        <h2 class="mt-0 mb-4 text-muted">DATA WILAYAH INDONESIA</h2>
+
+        <div class="row">
+          <!-- PROVINSI -->
+          <div class="col-md-12">
+            <div class="card mb-4">
+              <div v-if="fetchProvincesCode" class="card-body bg-secondary">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 class="text-warning mb-3 mt-0">Fetch List Provinsi</h4>
+                    <pre v-html="fetchProvincesCode" class="mb-0 text-white"></pre>
+                  </div>
+                  <div class="col-md-6">
+                    <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
+                    <pre v-html="responseProvinces" class="text-white" style="max-height: 140px;"></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-0">
+                  <label for="">Pilih Provinsi</label>
+                  <select v-model="provinceId" class="form-control">
+                    <option value=""></option>
+                    <option v-for="prov in provinces" :key="prov.id" :value="prov.id">{{ prov.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- KAB/KOTA -->
+          <div class="col-md-12">
+            <transition name="fade">
+              <div v-if="fetchRegenciesCode" class="card mb-4">
+                <div class="card-body bg-secondary">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0">Fetch List Kab/Kota</h4>
+                      <pre v-html="fetchRegenciesCode" class="mb-0 text-white"></pre>
+                    </div>
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
+                      <pre v-html="responseRegencies" class="text-white" style="max-height: 140px;"></pre>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="provinceId" class="card-body">
+                  <div class="form-group mb-0">
+                    <label for="">Pilih Kab/Kota</label>
+                    <select v-model="regencyId" class="form-control">
+                      <option value=""></option>
+                      <option v-for="reg in regencies" :key="reg.id" :value="reg.id">{{ reg.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </div>
+        <!-- /row -->
+
+        <div class="row">
+          <!-- KECAMATAN -->
+          <div class="col-md-12">
+            <transition name="fade">
+              <div v-if="fetchDistrictsCode" class="card mb-4">
+                <div class="card-body bg-secondary">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0">Fetch List Kecamatan</h5 class="mb-3 mt-0">
+                      <pre v-html="fetchDistrictsCode" class="mb-0 text-white"></pre>
+                    </div>
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
+                      <pre v-html="responseDistricts" class="text-white" style="max-height: 140px;"></pre>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="regencyId" class="card-body">
+                  <div class="form-group mb-0">
+                    <label for="">Pilih Kecamatan</label>
+                    <select v-model="districtId" class="form-control">
+                      <option value=""></option>
+                      <option v-for="dist in districts" :key="dist.id" :value="dist.id">{{ dist.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+          <!-- KELURAHAN -->
+          <div class="col-md-12">
+            <transition name="fade">
+              <div v-if="fetchVillagesCode" class="card mb-4">
+                <div class="card-body bg-secondary">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0">Fetch List Kelurahan</h5>
+                      <pre v-html="fetchVillagesCode" class="mb-0 text-white"></pre>
+                    </div>
+                    <div class="col-md-6">
+                      <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
+                      <pre v-html="responseVillages" class="text-white" style="max-height: 140px;"></pre>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="districtId" class="card-body">
+                  <div class="form-group mb-0">
+                    <label for="">Pilih Kelurahan</label>
+                    <select v-model="villageId" class="form-control">
+                      <option value=""></option>
+                      <option v-for="vill in villages" :key="vill.id" :value="vill.id">{{ vill.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </div>
+        <!-- /row -->
+        <footer class="mb-4">
+          <span class="text-muted">
+            &copy; 2019 - Muhammad Syifa
+          </span>
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
