@@ -72,7 +72,7 @@ const el = new Vue({
     },
     fetchRegenciesCode() {
       return !this.provinceId ? '' : [
-        `// ${this.provinceId} = ID Provinsi`,
+        `<small class="text-fade-50">// ID Provinsi ${this.selectedProvince.name} = ${this.provinceId}</small>`,
         `fetch(\`<a href="${this.urlApiRegencies}" target="_blank">${this.urlApiRegencies}</a>\`)`,
         '.then(response => response.json())',
         '.then(regencies => console.log(regencies));'
@@ -80,7 +80,7 @@ const el = new Vue({
     },
     fetchDistrictsCode() {
       return !this.regencyId ? '' : [
-        `// ${this.regencyId} = ID Kab/Kota`,
+        `<small class="text-fade-50">// ID ${this.selectedRegency.name} = ${this.regencyId}</small>`,
         `fetch(\`<a href="${this.urlApiDistricts}" target="_blank">${this.urlApiDistricts}</a>\`)`,
         '.then(response => response.json())',
         '.then(districts => console.log(districts));'
@@ -88,7 +88,7 @@ const el = new Vue({
     },
     fetchVillagesCode() {
       return !this.districtId ? '' : [
-        `// ${this.districtId} = ID Kecamatan`,
+        `<small class="text-fade-50">// ID Kecamatan ${this.selectedDistrict.name} = ${this.districtId}</small>`,
         `fetch(\`<a href="${this.urlApiVillages}" target="_blank">${this.urlApiVillages}</a>\`)`,
         '.then(response => response.json())',
         '.then(villages => console.log(villages));'
