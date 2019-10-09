@@ -40,7 +40,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json
 
 Contoh Response:
 
-```json
+```
 [
   {
     "id": "11",
@@ -49,10 +49,6 @@ Contoh Response:
   {
     "id": "12",
     "name": "SUMATERA UTARA"
-  },
-  {
-    "id": "13",
-    "name": "SUMATERA BARAT"
   },
   ...
 ]
@@ -72,7 +68,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/regencies/11.json
 
 Contoh Response:
 
-```json
+```
 [
   {
     "id": "1101",
@@ -83,11 +79,6 @@ Contoh Response:
     "id": "1102",
     "province_id": "11",
     "name": "KABUPATEN ACEH SINGKIL"
-  },
-  {
-    "id": "1103",
-    "province_id": "11",
-    "name": "KABUPATEN ACEH SELATAN"
   },
   ...
 ]
@@ -107,7 +98,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/districts/1103.json
 
 Contoh Response:
 
-```json
+```
 [
   {
     "id": "1103010",
@@ -118,11 +109,6 @@ Contoh Response:
     "id": "1103011",
     "regency_id": "1103",
     "name": "TRUMON TIMUR"
-  },
-  {
-    "id": "1103012",
-    "regency_id": "1103",
-    "name": "TRUMON TENGAH"
   },
   ...
 ]
@@ -142,7 +128,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/villages/1103010.json
 
 Contoh Response:
 
-```json
+```
 [
   {
     "id": "1103010001",
@@ -153,11 +139,6 @@ Contoh Response:
     "id": "1103010002",
     "district_id": "1103010",
     "name": "RAKET"
-  },
-  {
-    "id": "1103010003",
-    "district_id": "1103010",
-    "name": "GAMPONG TENGAH"
   },
   ...
 ]
@@ -177,7 +158,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/province/11.json
 
 Contoh Response:
 
-```json
+```
 {
   "id": "11",
   "name": "ACEH"
@@ -198,7 +179,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/regency/1103.json
 
 Contoh Response:
 
-```json
+```
 {
   "id": "1103",
   "province_id": "11",
@@ -220,7 +201,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/district/1103011.json
 
 Contoh Response:
 
-```json
+```
 {
   "id": "1103011",
   "regency_id": "1103",
@@ -242,7 +223,7 @@ GET https://emsifa.github.io/api-wilayah-indonesia/api/village/1103011010.json
 
 Contoh Response:
 
-```json
+```
 {
   "id": "1103011010",
   "district_id": "1103011",
@@ -250,3 +231,10 @@ Contoh Response:
 }
 ```
 
+## LIMITASI
+
+Karena API ini dihosting di Github Page, Github Page sendiri memberikan batasan bandwith 100GB/bulan. Rata-rata endpoint disini memiliki ukuran 1KB/endpoint, jadi kurang lebih request yang dapat digunakan adalah 100.000.000 request per bulan, atau sekitar 3.000.000 request/hari.
+
+Karena limitasi ini, disarankan untuk hosting API ini di github kamu sendiri.
+
+Untuk lebih detail tentang limitasi Github Page, bisa dilihat [disini](https://help.github.com/en/articles/about-github-pages#usage-limits).
