@@ -4,7 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>API Publik Data Wilayah Indonesia</title>
+
+  <meta property="og:title" content="API Statis Data Wilayah Indonesia" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://emsifa.github.io/api-wilayah-indonesia" />
+  <meta property="og:image" content="https://emsifa.github.io/api-wilayah-indonesia/img/og-image.png" />
+
+  <title>API Statis Data Wilayah Indonesia</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -13,11 +20,19 @@
   <script src="js/app.js" defer></script>
 </head>
 <body>
-  <div id="app" class="container-fluid my-5">
+  <div id="app" class="container-fluid my-3 my-md-5">
     <div class="row d-flex align-items-center justify-content-center" style="height: 100vh">
       <div class="col-lg-7 col-md-7 col-sm-10 col-11">
-        <h3 class="text-muted"><strong>API PUBLIK</strong></h3>
-        <h2 class="mt-0 mb-4 text-muted">DATA WILAYAH INDONESIA</h2>
+        <header>
+          <h3 class="text-muted"><strong>API STATIS</strong></h3>
+          <h2 class="mt-0 mb-0 text-info">
+            DATA WILAYAH INDONESIA
+          </h2>
+          <p class="mt-3 mb-4 text-muted">
+            Contoh penggunaan <a href="https://www.github.com/emsifa/api-wilayah-indonesia" class="underline">API statis data wilayah Indonesia <sup><i class="icon ion-logo-github text-info"></i></sup></a> menggunakan Javascript <code>fetch</code> API.
+          </p>
+        </header>
+
 
         <div class="row">
           <!-- PROVINSI -->
@@ -31,7 +46,10 @@
                   </div>
                   <div class="col-md-6">
                     <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
-                    <pre v-html="responseProvinces" class="text-white" style="max-height: 140px;"></pre>
+                    <div v-if="fetchingProvinces" class="text-white d-flex justify-content-center align-items-center" style="max-height: 140px;">
+                      <i class="icon ion-md-refresh spinning d-inline-block text-fade-50" style="font-size: 2rem;"></i>
+                    </div>
+                    <pre v-if="!fetchingProvinces" v-html="responseProvinces" class="text-white" style="max-height: 140px;"></pre>
                   </div>
                 </div>
               </div>
@@ -47,7 +65,7 @@
             </div>
           </div>
           <!-- KAB/KOTA -->
-          <div class="col-md-12">
+          <div class="col-md-12 d-none unhide-on-mounted">
             <transition name="fade">
               <div v-if="fetchRegenciesCode" class="card mb-4">
                 <div class="card-body bg-secondary">
@@ -58,7 +76,10 @@
                     </div>
                     <div class="col-md-6">
                       <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
-                      <pre v-html="responseRegencies" class="text-white" style="max-height: 140px;"></pre>
+                      <div v-if="fetchingRegencies" class="text-white d-flex justify-content-center align-items-center" style="max-height: 140px;">
+                        <i class="icon ion-md-refresh spinning d-inline-block text-fade-50" style="font-size: 2rem;"></i>
+                      </div>
+                      <pre v-if="!fetchingRegencies" v-html="responseRegencies" class="text-white" style="max-height: 140px;"></pre>
                     </div>
                   </div>
                 </div>
@@ -79,7 +100,7 @@
 
         <div class="row">
           <!-- KECAMATAN -->
-          <div class="col-md-12">
+          <div class="col-md-12 d-none unhide-on-mounted">
             <transition name="fade">
               <div v-if="fetchDistrictsCode" class="card mb-4">
                 <div class="card-body bg-secondary">
@@ -90,7 +111,10 @@
                     </div>
                     <div class="col-md-6">
                       <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
-                      <pre v-html="responseDistricts" class="text-white" style="max-height: 140px;"></pre>
+                      <div v-if="fetchingDistricts" class="text-white d-flex justify-content-center align-items-center" style="max-height: 140px;">
+                        <i class="icon ion-md-refresh spinning d-inline-block text-fade-50" style="font-size: 2rem;"></i>
+                      </div>
+                      <pre v-if="!fetchingDistricts" v-html="responseDistricts" class="text-white" style="max-height: 140px;"></pre>
                     </div>
                   </div>
                 </div>
@@ -107,7 +131,7 @@
             </transition>
           </div>
           <!-- KELURAHAN -->
-          <div class="col-md-12">
+          <div class="col-md-12 d-none unhide-on-mounted">
             <transition name="fade">
               <div v-if="fetchVillagesCode" class="card mb-4">
                 <div class="card-body bg-secondary">
@@ -118,7 +142,10 @@
                     </div>
                     <div class="col-md-6">
                       <h5 class="text-warning mb-3 mt-0 mt-md-0 mt-3">Response</h5>
-                      <pre v-html="responseVillages" class="text-white" style="max-height: 140px;"></pre>
+                      <div v-if="fetchingVillages" class="text-white d-flex justify-content-center align-items-center" style="max-height: 140px;">
+                        <i class="icon ion-md-refresh spinning d-inline-block text-fade-50" style="font-size: 2rem;"></i>
+                      </div>
+                      <pre v-if="!fetchingVillages" v-html="responseVillages" class="text-white" style="max-height: 140px;"></pre>
                     </div>
                   </div>
                 </div>
@@ -137,18 +164,53 @@
         </div>
         <!-- /row -->
 
-        <transition name="zoom">
-          <div class="text-center mb-3" v-if="completed">
-            <a href="https://github.com/emsifa/api-wilayah-indonesia" class="github-link text-muted">
-              <i class="icon ion-logo-github" style="font-size: 80px;"></i>
-            </a>
+        <footer class="mb-4">
+          <div class="row d-flex d-sm-flex d-md-none">
+            <transition name="fade">
+              <div v-if="completed" class="col-12 text-center text-muted mb-4">
+                Selengkapnya
+                <br>
+                <i class="icon ion-md-arrow-down"></i>
+                <br>
+                <a href="" class="d-inline-block text-info" style="font-size: 5rem; margin-top: -24px;">
+                  <strong>
+                    <i class="icon ion-logo-github"></i>
+                  </strong>
+                </a>
+              </div>
+            </transition>
+            <div class="col-12 text-center">
+              <p class="text-muted m-0">
+                &copy; 2019
+                -
+                <a href="https://www.facebook.com/em.sifa" class="text-info">Muhammad Syifa</a>
+                <span class="text-fade-50">|</span>
+                <span>Powered by <a href="https://pages.github.com/" class="text-info">GitHub Page</a></span>
+              </span>
+            </div>
           </div>
-        </transition>
-
-        <footer class="mb-4 text-center">
-          <span class="text-muted">
-            &copy; 2019 - Muhammad Syifa
-          </span>
+          <div class="row d-none d-sm-none d-md-flex">
+            <div class="col-md-6">
+              <p class="text-muted m-0">
+                &copy; 2019
+                -
+                <a href="https://www.facebook.com/em.sifa" class="text-info">Muhammad Syifa</a>
+                <span class="text-fade-50">|</span>
+                <span>Powered by <a href="https://pages.github.com/" class="text-info">GitHub Page</a></span>
+              </p>
+            </div>
+            <transition name="slide">
+              <div v-if="completed" class="col-md-6 text-right text-muted">
+                Selengkapnya ada di
+                <a href="" class="text-info">
+                  <strong>
+                    GitHub
+                    <i class="icon ion-md-arrow-forward"></i>
+                  </strong>
+                </a>
+              </div>
+            </transition>
+          </div>
         </footer>
       </div>
     </div>
