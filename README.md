@@ -32,7 +32,7 @@ API statis adalah API yang _endpoint_-nya terdiri dari file statis.
 
 ## ENDPOINTS
 
-#### Mengambil Daftar Provinsi
+#### 1. Mengambil Daftar Provinsi
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json
@@ -54,7 +54,7 @@ Contoh Response:
 ]
 ```
 
-#### Mengambil Daftar Kab/Kota pada Provinsi Tertentu
+#### 2. Mengambil Daftar Kab/Kota pada Provinsi Tertentu
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/regencies/{provinceId}.json
@@ -84,7 +84,7 @@ Contoh Response:
 ]
 ```
 
-#### Mengambil Daftar Kecamatan pada Kab/Kota Tertentu
+#### 3. Mengambil Daftar Kecamatan pada Kab/Kota Tertentu
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/districts/{regencyId}.json
@@ -114,7 +114,7 @@ Contoh Response:
 ]
 ```
 
-#### Mengambil Daftar Kelurahan pada Kecamatan Tertentu
+#### 4. Mengambil Daftar Kelurahan pada Kecamatan Tertentu
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/villages/{districtId}.json
@@ -144,7 +144,7 @@ Contoh Response:
 ]
 ```
 
-#### Mengambil Data Provinsi berdasarkan ID Provinsi
+#### 5. Mengambil Data Provinsi berdasarkan ID Provinsi
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/province/{provinceId}.json
@@ -165,7 +165,7 @@ Contoh Response:
 }
 ```
 
-#### Mengambil Data Kab/Kota berdasarkan ID Kab/Kota
+#### 6. Mengambil Data Kab/Kota berdasarkan ID Kab/Kota
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/regency/{regencyId}.json
@@ -187,7 +187,7 @@ Contoh Response:
 }
 ```
 
-#### Mengambil Data Kecamatan berdasarkan ID Kecamatan
+#### 7. Mengambil Data Kecamatan berdasarkan ID Kecamatan
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/district/{districtId}.json
@@ -209,7 +209,7 @@ Contoh Response:
 }
 ```
 
-#### Mengambil Data Kelurahan berdasarkan ID Kelurahan
+#### 8. Mengambil Data Kelurahan berdasarkan ID Kelurahan
 
 ```
 GET https://emsifa.github.io/api-wilayah-indonesia/api/village/{villageId}.json
