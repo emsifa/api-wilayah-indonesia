@@ -7,3 +7,22 @@ html,body {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+.zoom-enter-active, .zoom-leave-active {
+  transition: all .5s;
+}
+.zoom-enter, .zoom-leave-to /* .zoom-leave-active below version 2.1.8 */ {
+  transform: scale(1.5);
+}
+
+a.github-link:hover > i {
+  color: #37474f !important;
+}
+
+.bg-secondary {
+  background-color: #37474f !important;
+}
+
+pre a[href] {
+  color: #b2ebf2;
+}
