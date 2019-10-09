@@ -1,5 +1,6 @@
 function getCurrentUrl() {
   const url = location.href.split('?').shift()
+
   if (url.match(/\/$/)) {
     return url.replace(/\/$/, '')
   }
@@ -19,6 +20,10 @@ const el = new Vue({
     regencies: [],
     districts: [],
     villages: [],
+    fetchingProvinces: false,
+    fetchingRegencies: false,
+    fetchingDistricts: false,
+    fetchingVillages: false,
     provinceId: '',
     regencyId: '',
     districtId: '',
@@ -67,7 +72,7 @@ const el = new Vue({
     },
     fetchRegenciesCode() {
       return !this.provinceId ? '' : [
-        `// ${this.provinceId} = ID Provinsi`,
+        `<small class="text-fade-50">// ID Provinsi ${this.selectedProvince.name} = ${this.provinceId}</small>`,
         `fetch(\`<a href="${this.urlApiRegencies}" target="_blank">${this.urlApiRegencies}</a>\`)`,
         '.then(response => response.json())',
         '.then(regencies => console.log(regencies));'
@@ -75,7 +80,7 @@ const el = new Vue({
     },
     fetchDistrictsCode() {
       return !this.regencyId ? '' : [
-        `// ${this.regencyId} = ID Kab/Kota`,
+        `<small class="text-fade-50">// ID ${this.selectedRegency.name} = ${this.regencyId}</small>`,
         `fetch(\`<a href="${this.urlApiDistricts}" target="_blank">${this.urlApiDistricts}</a>\`)`,
         '.then(response => response.json())',
         '.then(districts => console.log(districts));'
@@ -83,7 +88,7 @@ const el = new Vue({
     },
     fetchVillagesCode() {
       return !this.districtId ? '' : [
-        `// ${this.districtId} = ID Kecamatan`,
+        `<small class="text-fade-50">// ID Kecamatan ${this.selectedDistrict.name} = ${this.districtId}</small>`,
         `fetch(\`<a href="${this.urlApiVillages}" target="_blank">${this.urlApiVillages}</a>\`)`,
         '.then(response => response.json())',
         '.then(villages => console.log(villages));'
@@ -117,9 +122,16 @@ const el = new Vue({
   created() {
     this.fetchProvinces()
   },
+  mounted() {
+    [...document.querySelectorAll('.unhide-on-mounted')].forEach(el => {
+      el.classList.remove('d-none')
+    })
+  },
   methods: {
     async fetchProvinces() {
+      this.fetchingProvinces = true
       const result = await fetch(`api/provinces.json`)
+      this.fetchingProvinces = false
       this.provinces = await result.json()
     },
     async fetchRegencies() {
@@ -127,7 +139,9 @@ const el = new Vue({
         this.regencies = []
         return
       }
+      this.fetchingRegencies = true
       const result = await fetch(`api/regencies/${this.provinceId}.json`)
+      this.fetchingRegencies = false
       this.regencies = await result.json()
     },
     async fetchDistricts() {
@@ -136,7 +150,9 @@ const el = new Vue({
         return
       }
 
+      this.fetchingDistricts = true
       const result = await fetch(`api/districts/${this.regencyId}.json`)
+      this.fetchingDistricts = false
       this.districts = await result.json()
     },
     async fetchVillages() {
@@ -145,7 +161,9 @@ const el = new Vue({
         return
       }
 
+      this.fetchingVillages = true
       const result = await fetch(`api/villages/${this.districtId}.json`)
+      this.fetchingVillages = false
       this.villages = await result.json()
     }
   }
