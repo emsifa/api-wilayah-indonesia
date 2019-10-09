@@ -22,7 +22,8 @@ const el = new Vue({
     provinceId: '',
     regencyId: '',
     districtId: '',
-    villageId: ''
+    villageId: '',
+    completed: false,
   },
   watch: {
     provinceId() {
@@ -40,35 +41,50 @@ const el = new Vue({
       this.villageId = ''
       this.fetchVillages()
     },
+    villageId() {
+      this.completed = true
+    }
   },
   computed: {
+    urlApiProvinces() {
+      return `${this.baseApiUrl}/provinces.json`
+    },
+    urlApiRegencies() {
+      return `${this.baseApiUrl}/regencies/${this.provinceId}.json`
+    },
+    urlApiDistricts() {
+      return `${this.baseApiUrl}/districts/${this.regencyId}.json`
+    },
+    urlApiVillages() {
+      return `${this.baseApiUrl}/villages/${this.districtId}.json`
+    },
     fetchProvincesCode() {
       return [
-        `fetch(\`${this.baseApiUrl}/provinces.json\`)`,
+        `fetch(\`<a href="${this.urlApiProvinces}" target="_blank">${this.urlApiProvinces}</a>\`)`,
         '.then(response => response.json())',
         '.then(provinces => console.log(provinces));'
       ].join('\n')
     },
     fetchRegenciesCode() {
       return !this.provinceId ? '' : [
-        `const provinceId = ${this.provinceId}; // ${this.selectedProvince.name}`,
-        `fetch(\`${this.baseApiUrl}/regencies/\${provinceId}.json\`)`,
+        `// ${this.provinceId} = ID Provinsi`,
+        `fetch(\`<a href="${this.urlApiRegencies}" target="_blank">${this.urlApiRegencies}</a>\`)`,
         '.then(response => response.json())',
         '.then(regencies => console.log(regencies));'
       ].join('\n')
     },
     fetchDistrictsCode() {
       return !this.regencyId ? '' : [
-        `const regencyId = ${this.regencyId}; // ${this.selectedRegency.name}`,
-        `fetch(\`${this.baseApiUrl}/districts/\${regencyId}.json\`)`,
+        `// ${this.regencyId} = ID Kab/Kota`,
+        `fetch(\`<a href="${this.urlApiDistricts}" target="_blank">${this.urlApiDistricts}</a>\`)`,
         '.then(response => response.json())',
         '.then(districts => console.log(districts));'
       ].join('\n')
     },
     fetchVillagesCode() {
       return !this.districtId ? '' : [
-        `const districtId = ${this.districtId}; // ${this.selectedDistrict.name}`,
-        `fetch(\`${this.baseApiUrl}/villages/\${districtId}.json\`)`,
+        `// ${this.districtId} = ID Kecamatan`,
+        `fetch(\`<a href="${this.urlApiVillages}" target="_blank">${this.urlApiVillages}</a>\`)`,
         '.then(response => response.json())',
         '.then(villages => console.log(villages));'
       ].join('\n')

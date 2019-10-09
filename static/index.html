@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>API Publik Data Wilayah Indonesia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
 
@@ -135,7 +136,16 @@
           </div>
         </div>
         <!-- /row -->
-        <footer class="mb-4">
+
+        <transition name="zoom">
+          <div class="text-center mb-3" v-if="completed">
+            <a href="https://github.com/emsifa/api-wilayah-indonesia" class="github-link text-muted">
+              <i class="icon ion-logo-github" style="font-size: 80px;"></i>
+            </a>
+          </div>
+        </transition>
+
+        <footer class="mb-4 text-center">
           <span class="text-muted">
             &copy; 2019 - Muhammad Syifa
           </span>
