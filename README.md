@@ -15,8 +15,8 @@ API statis adalah API yang _endpoint_-nya terdiri dari file statis.
 
 #### Bagaimana cara kerjanya?
 
-* Daftar provinsi, kab/kota, kecamatan, kelurahan/desa disimpan pada folder data berupa file `csv`, agar mudah diedit.
-* Kemudian script `generate.php` dijalankan. Script ini akan men-generate ribuan endpoint (file) kedalam folder `static/api`.
+* Daftar provinsi, kab/kota, kecamatan, kelurahan/desa disimpan pada folder `data` berupa file `csv` (agar mudah diedit).
+* Kemudian script `generate.php` dijalankan. Script ini akan membaca file `csv` didalam folder `data`, kemudian men-generate ribuan endpoint (file) kedalam folder `static/api`.
 * API siap 'dihidangkan'.
 
 #### Saya mau hosting di Github saya sendiri, bagaimana caranya?
