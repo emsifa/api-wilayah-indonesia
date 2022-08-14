@@ -240,3 +240,4 @@ Karena API ini dihosting di Github Page, Github Page sendiri memberikan batasan 
 Karena limitasi ini, disarankan untuk hosting API ini di github kamu sendiri.
 
 Untuk lebih detail tentang limitasi Github Page, bisa dilihat [disini](https://help.github.com/en/articles/about-github-pages#usage-limits).
+# api-wilayah-indonesia.github.io
