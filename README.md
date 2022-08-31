@@ -23,14 +23,20 @@ API statis adalah API yang _endpoint_-nya terdiri dari file statis.
 
 #### Saya mau hosting di Github saya sendiri, bagaimana caranya?
 
-* Fork repository ini. 
-* Buka cmd/terminal.
-* `git clone https://github.com/usernamekamu/api-wilayah-indonesia.git`.
-* `echo "" > hello.txt`.
-* `git add hello.txt`.
-* `git push origin master`.
-* Tunggu beberapa saat sampai _Github_ build _Github Page_ kamu.
-* Buka URL `https://usernamekamu.github.io/api-wilayah-indonesia`.
+* Klik fork di pojok kanan atas.
+* Pada halaman forking, **HAPUS CENTANG** "Copy the master branch only".
+* Klik "Create Fork".
+* Setelah selesai di Fork, klik Settings (bukan setting account, tapi setting repository).
+* Klik menu "Pages" untuk masuk ke menu pengaturan GitHub Pages.
+* Pada menu pengaturan GitHub Pages:
+  * Pilih Source: Deploy from a Branch
+  * Branch: `gh-pages`
+  * Direktori: `/root`
+  * Klik Save
+* Tunggu beberapa menit (5-10 menitan), kembali ke halaman home repository (https://github.com/usernamekamu/api-wilayah-indonesia).
+* Kalau halaman sudah terdeploy, di bagian kanan halaman, akan muncul informasi "Environments". Kalau belum tunggu lagi beberapa menit, lalu refresh.
+* Kalau sudah muncul informasi Environmentsnya, klik bagian "🚀 github-pages".
+* Di halaman Deployments, klik "View Deployment" untuk melihat halaman yang berhasil terdeploy.
 
 ## ENDPOINTS
 
