@@ -48,7 +48,7 @@ class Repository
 
     public function getRegenciesByProvinceId(string $provinceId): array
     {
-        return $this->mapCsv('regencies.csv', ['id', 'province_id', 'name'], function ($row) use ($provinceId) {
+        return $this->mapCsv('regencies.csv', ['id', 'province_id', 'role', 'name'], function ($row) use ($provinceId) {
             return $row[1] == $provinceId;
         });
     }
