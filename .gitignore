@@ -4,3 +4,4 @@ web/dist/
 /api/
 /data/
 /deploy/
+.cache/

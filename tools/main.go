@@ -9,9 +9,11 @@ func printUsage() {
 	fmt.Fprintf(os.Stderr, "Usage:\n")
 	fmt.Fprintf(os.Stderr, "  go run ./tools extract-csv [-d dir_output] {path_file_sql | url}\n")
 	fmt.Fprintf(os.Stderr, "  go run ./tools generate-static-api [-data data] [-out api] [-v]\n")
+	fmt.Fprintf(os.Stderr, "  go run ./tools generate-boundaries [-data-boundaries data/boundaries] [-out api] [-prov 31] [-limit 0] [-skip-download] [-v]\n")
 	fmt.Fprintf(os.Stderr, "\nCommands:\n")
 	fmt.Fprintf(os.Stderr, "  extract-csv            extract INSERT statements from SQL dump into per-table CSV files (alias: extract-sql)\n")
 	fmt.Fprintf(os.Stderr, "  generate-static-api    pre-generate the static wilayah API from CSV/JSON data (alias: generate-api)\n")
+	fmt.Fprintf(os.Stderr, "  generate-boundaries    download, extract, convert boundaries SQL and update API endpoints\n")
 }
 
 func main() {
@@ -31,6 +33,11 @@ func main() {
 		}
 	case "generate-static-api", "generate-api":
 		if err := runGenerateStaticAPI(args); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+	case "generate-boundaries":
+		if err := runGenerateBoundaries(args); err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}

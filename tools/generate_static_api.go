@@ -27,7 +27,9 @@ import (
 	"io"
 	"log"
 	"os"
+	"math"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -144,14 +146,14 @@ func genParentPlace(e *genEntry) *genPlace {
 }
 
 type genMeta struct {
-	GeneratedAt string `json:"generated_at"`
-	Level       int    `json:"level"`
+	UpdatedAt string `json:"updated_at"`
+	Level     int    `json:"level"`
 }
 
 func genResponse(data any, level int) map[string]any {
 	return map[string]any{
 		"data": data,
-		"meta": genMeta{GeneratedAt: time.Now().UTC().Format(time.RFC3339), Level: level},
+		"meta": genMeta{UpdatedAt: time.Now().UTC().Format("2006-01-02"), Level: level},
 	}
 }
 
@@ -336,8 +338,9 @@ func (g *generator) phaseB(level12Path string) (regenerated, paths int) {
 			if strings.Count(pathJSON, "[") == 3 && strings.Count(pathJSON, "]") == 2 {
 				pathJSON += "]"
 			}
+			pathJSON = roundPathCoords(pathJSON)
 			if json.Valid([]byte(pathJSON)) {
-				data := map[string]any{"id": kode, "name": e.Nama, "path": json.RawMessage(pathJSON)}
+				data := map[string]any{"id": kode, "path": json.RawMessage(pathJSON)}
 				writeGenJSONCompact(filepath.Join(g.outDir, "paths", kode+".json"), genResponse(data, genLevelCount(kode)+1))
 				g.pathCount++
 				paths++
@@ -562,7 +565,7 @@ func genParseInt64(s string) int64 {
 }
 
 func writeGenJSONIndent(path string, v any) {
-	if err := writeGenJSON(path, v, true); err != nil {
+	if err := writeGenJSON(path, v, false); err != nil {
 		log.Fatalf("write %s: %v", path, err)
 	}
 }
@@ -640,4 +643,21 @@ func repoRoot() string {
 		}
 		dir = parent
 	}
+}
+
+// coordFloatRe matches any JSON floating-point number inside a coordinate array.
+var coordFloatRe = regexp.MustCompile(`-?\d+\.\d+`)
+
+// roundPathCoords rounds every float in a raw coordinate JSON string to 6
+// decimal places (~11 cm precision), significantly shrinking file sizes while
+// retaining more than enough accuracy for administrative boundary rendering.
+func roundPathCoords(pathJSON string) string {
+	return coordFloatRe.ReplaceAllStringFunc(pathJSON, func(s string) string {
+		f, err := strconv.ParseFloat(s, 64)
+		if err != nil {
+			return s
+		}
+		rounded := math.Round(f*1e6) / 1e6
+		return strconv.FormatFloat(rounded, 'f', 6, 64)
+	})
 }

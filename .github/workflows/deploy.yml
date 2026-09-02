@@ -48,6 +48,20 @@ jobs:
           echo "api files:"
           find api -type f | wc -l
 
+      - name: Cache boundaries zip
+        uses: actions/cache@v4
+        with:
+          path: .cache/wilayah_boundaries.zip
+          key: wilayah-boundaries-zip-v1
+
+      - name: Generate Boundaries
+        run: |
+          go run ./tools generate-boundaries -v
+          echo "api/paths size:"
+          du -sh api/paths
+          echo "api/paths files:"
+          find api/paths -type f | wc -l
+
       - name: Assemble publish dir
         run: |
           mkdir -p deploy
