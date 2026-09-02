@@ -1,8 +1,19 @@
+export type SnippetLang =
+  | "curl"
+  | "fetch"
+  | "axios"
+  | "laravel"
+  | "go"
+  | "python"
+  | "php"
+  | "dart";
+
 export type ApiEndpoint = {
   method: "GET";
   path: string;
   description: string;
   curl: string;
+  snippets: Record<SnippetLang, string>;
   response: string;
 };
 
@@ -14,8 +25,35 @@ export const apiEndpoints: ApiEndpoint[] = [
   {
     method: "GET",
     path: "/stats.json",
-    description: "Intip ringkasannya dulu — total provinsi, kab/kota, kecamatan, kelurahan, kode pos, luas & populasi",
+    description:
+      "Intip ringkasannya dulu — total provinsi, kab/kota, kecamatan, kelurahan, kode pos, luas & populasi",
     curl: `curl ${BASE}/stats.json`,
+    snippets: {
+      curl: `curl ${BASE}/stats.json`,
+      fetch: `const res = await fetch("${BASE}/stats.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/stats.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/stats.json");
+$data = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/stats.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/stats.json")
+data = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/stats.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$data = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/stats.json"));
+final data = jsonDecode(res.body)["data"];`,
+    },
     response: `{
   "data": {
     "total_area": 1889518.2539999997,
@@ -36,8 +74,35 @@ export const apiEndpoints: ApiEndpoint[] = [
   {
     method: "GET",
     path: "/provinces.json",
-    description: "Ambil semua provinsi — lengkap sama kapital, koordinat, populasi & luasnya (level 1)",
+    description:
+      "Ambil semua provinsi — lengkap sama kapital, koordinat, populasi & luasnya (level 1)",
     curl: `curl ${BASE}/provinces.json`,
+    snippets: {
+      curl: `curl ${BASE}/provinces.json`,
+      fetch: `const res = await fetch("${BASE}/provinces.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/provinces.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/provinces.json");
+$provinces = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/provinces.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/provinces.json")
+provinces = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/provinces.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$provinces = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/provinces.json"));
+final provinces = jsonDecode(res.body)["data"] as List;`,
+    },
     response: `{
   "data": [
     {
@@ -73,8 +138,35 @@ export const apiEndpoints: ApiEndpoint[] = [
   {
     method: "GET",
     path: "/provinces/{code}.json",
-    description: "Kepoin satu provinsi aja by kode — misal 32 = Jawa Barat (level 1)",
+    description:
+      "Kepoin satu provinsi aja by kode — misal 32 = Jawa Barat (level 1)",
     curl: `curl ${BASE}/provinces/32.json`,
+    snippets: {
+      curl: `curl ${BASE}/provinces/32.json`,
+      fetch: `const res = await fetch("${BASE}/provinces/32.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/provinces/32.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/provinces/32.json");
+$province = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/provinces/32.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/provinces/32.json")
+province = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/provinces/32.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$province = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/provinces/32.json"));
+final province = jsonDecode(res.body)["data"] as Map;`,
+    },
     response: `{
   "data": {
     "id": "32",
@@ -95,9 +187,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/regencies/{province_code}.json",
-    description: "Daftar kab/kota di provinsi tertentu — misal semua kota di Jawa Barat (level 2)",
+    path: "/regencies/{province_id}.json",
+    description:
+      "Daftar kab/kota di provinsi tertentu — misal semua kota di Jawa Barat (level 2)",
     curl: `curl ${BASE}/regencies/32.json`,
+    snippets: {
+      curl: `curl ${BASE}/regencies/32.json`,
+      fetch: `const res = await fetch("${BASE}/regencies/32.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/regencies/32.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/regencies/32.json");
+$regencies = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/regencies/32.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/regencies/32.json")
+regencies = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/regencies/32.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$regencies = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/regencies/32.json"));
+final regencies = jsonDecode(res.body)["data"] as List;`,
+    },
     response: `{
   "data": [
     {
@@ -132,9 +251,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/regencies/{regency_code}.json",
-    description: "Detail satu kab/kota by kode — bonus info provinsinya juga (level 2)",
+    path: "/regencies/{regency_id}.json",
+    description:
+      "Detail satu kab/kota by kode — bonus info provinsinya juga (level 2)",
     curl: `curl ${BASE}/regencies/32.73.json`,
+    snippets: {
+      curl: `curl ${BASE}/regencies/32.73.json`,
+      fetch: `const res = await fetch("${BASE}/regencies/32.73.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/regencies/32.73.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/regencies/32.73.json");
+$regency = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/regencies/32.73.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/regencies/32.73.json")
+regency = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/regencies/32.73.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$regency = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/regencies/32.73.json"));
+final regency = jsonDecode(res.body)["data"] as Map;`,
+    },
     response: `{
   "data": {
     "id": "32.73",
@@ -159,9 +305,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/districts/{regency_code}.json",
-    description: "Daftar kecamatan di kab/kota tertentu — ringkas id + nama aja (level 3)",
+    path: "/districts/{regency_id}.json",
+    description:
+      "Daftar kecamatan di kab/kota tertentu — ringkas id + nama aja (level 3)",
     curl: `curl ${BASE}/districts/32.73.json`,
+    snippets: {
+      curl: `curl ${BASE}/districts/32.73.json`,
+      fetch: `const res = await fetch("${BASE}/districts/32.73.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/districts/32.73.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/districts/32.73.json");
+$districts = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/districts/32.73.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/districts/32.73.json")
+districts = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/districts/32.73.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$districts = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/districts/32.73.json"));
+final districts = jsonDecode(res.body)["data"] as List;`,
+    },
     response: `{
   "data": [
     { "id": "32.73.01", "name": "Sukasari" },
@@ -179,9 +352,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/districts/{district_code}.json",
-    description: "Detail satu kecamatan — plus tau dia dari provinsi & kab/kota mana (level 3)",
+    path: "/districts/{district_id}.json",
+    description:
+      "Detail satu kecamatan — plus tau dia dari provinsi & kab/kota mana (level 3)",
     curl: `curl ${BASE}/districts/32.73.01.json`,
+    snippets: {
+      curl: `curl ${BASE}/districts/32.73.01.json`,
+      fetch: `const res = await fetch("${BASE}/districts/32.73.01.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/districts/32.73.01.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/districts/32.73.01.json");
+$district = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/districts/32.73.01.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/districts/32.73.01.json")
+district = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/districts/32.73.01.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$district = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/districts/32.73.01.json"));
+final district = jsonDecode(res.body)["data"] as Map;`,
+    },
     response: `{
   "data": {
     "id": "32.73.01",
@@ -203,9 +403,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/villages/{district_code}.json",
-    description: "Daftar kelurahan/desa di kecamatan itu — udah include kode pos (level 4)",
+    path: "/villages/{district_id}.json",
+    description:
+      "Daftar kelurahan/desa di kecamatan itu — udah include kode pos (level 4)",
     curl: `curl ${BASE}/villages/32.73.01.json`,
+    snippets: {
+      curl: `curl ${BASE}/villages/32.73.01.json`,
+      fetch: `const res = await fetch("${BASE}/villages/32.73.01.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/villages/32.73.01.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/villages/32.73.01.json");
+$villages = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/villages/32.73.01.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/villages/32.73.01.json")
+villages = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/villages/32.73.01.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$villages = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/villages/32.73.01.json"));
+final villages = jsonDecode(res.body)["data"] as List;`,
+    },
     response: `{
   "data": [
     { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152" },
@@ -221,9 +448,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/villages/{village_code}.json",
-    description: "Detail satu kelurahan/desa — lengkap kode pos + provinsi, kab/kota, kecamatan (level 4)",
+    path: "/villages/{village_id}.json",
+    description:
+      "Detail satu kelurahan/desa — lengkap kode pos + provinsi, kab/kota, kecamatan (level 4)",
     curl: `curl ${BASE}/villages/32.73.01.1001.json`,
+    snippets: {
+      curl: `curl ${BASE}/villages/32.73.01.1001.json`,
+      fetch: `const res = await fetch("${BASE}/villages/32.73.01.1001.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/villages/32.73.01.1001.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/villages/32.73.01.1001.json");
+$village = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/villages/32.73.01.1001.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/villages/32.73.01.1001.json")
+village = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/villages/32.73.01.1001.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$village = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/villages/32.73.01.1001.json"));
+final village = jsonDecode(res.body)["data"] as Map;`,
+    },
     response: `{
   "data": {
     "id": "32.73.01.1001",
@@ -250,9 +504,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/postal-codes/{postal_code}.json",
-    description: "Cari kelurahan by kode pos — misal 40152 tuh daerah mana aja (level 4)",
+    path: "/postal-codes/{postal_id}.json",
+    description:
+      "Cari kelurahan by kode pos — misal 40152 tuh daerah mana aja (level 4)",
     curl: `curl ${BASE}/postal-codes/40152.json`,
+    snippets: {
+      curl: `curl ${BASE}/postal-codes/40152.json`,
+      fetch: `const res = await fetch("${BASE}/postal-codes/40152.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/postal-codes/40152.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/postal-codes/40152.json");
+$villages = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/postal-codes/40152.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/postal-codes/40152.json")
+villages = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/postal-codes/40152.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$villages = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/postal-codes/40152.json"));
+final villages = jsonDecode(res.body)["data"] as List;`,
+    },
     response: `{
   "data": [
     {
@@ -281,9 +562,36 @@ export const apiEndpoints: ApiEndpoint[] = [
   },
   {
     method: "GET",
-    path: "/paths/{province_or_regency_code}.json",
-    description: "Butuh polygon buat peta? Ambil garis batas provinsi/kab-kota di sini (compact JSON)",
+    path: "/paths/{province_or_regency_id}.json",
+    description:
+      "Butuh polygon buat peta? Ambil garis batas provinsi/kab-kota di sini (compact JSON)",
     curl: `curl ${BASE}/paths/32.json`,
+    snippets: {
+      curl: `curl ${BASE}/paths/32.json`,
+      fetch: `const res = await fetch("${BASE}/paths/32.json");
+const { data, meta } = await res.json();`,
+      axios: `const { data: { data, meta } } = await axios.get(
+  "${BASE}/paths/32.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/paths/32.json");
+$path = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/paths/32.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/paths/32.json")
+path = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/paths/32.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$path = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/paths/32.json"));
+final path = jsonDecode(res.body)["data"] as Map;`,
+    },
     response: `{
   "data": {
     "id": "32",
