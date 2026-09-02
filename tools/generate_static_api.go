@@ -241,21 +241,21 @@ func (g *generator) phaseA(wilayahPath, postalPath string) int {
 		writeList("regencies", k, g.regenciesByProv[genProvinceOf(k)], 2)
 	}
 
-	for _, k := range genSortedKodeKeys(g.regenciesByProv) {
+	for _, k := range genAllRegencies(g.regenciesByProv) {
 		e := g.all[k]
 		d := newGenPlace(e)
 		d.Province = genParentPlace(g.all[genProvinceOf(k)])
 		write("regencies", k+".json", d, 2)
-		writeList("districts", k, g.districtsByReg[genRegencyOf(k)], 3)
+		writeList("districts", k, g.districtsByReg[k], 3)
 	}
 
-	for _, k := range genSortedKodeKeys(g.districtsByReg) {
+	for _, k := range genAllDistricts(g.districtsByReg) {
 		e := g.all[k]
 		d := newGenPlace(e)
 		d.Province = genParentPlace(g.all[genProvinceOf(k)])
 		d.Regency = genParentPlace(g.all[genRegencyOf(k)])
 		write("districts", k+".json", d, 3)
-		writeList("villages", k, g.villagesByDist[genDistrictOf(k)], 4)
+		writeList("villages", k, g.villagesByDist[k], 4)
 	}
 
 	for _, k := range genSortedKodeKeys(g.villagesByDist) {
@@ -365,7 +365,7 @@ func (g *generator) phaseB(level12Path string) (regenerated, paths int) {
 			writeGenJSONIndent(filepath.Join(g.outDir, "regencies", k+".json"), genResponse(items, 2))
 			regenerated++
 		}
-		for _, k := range genSortedKodeKeys(g.regenciesByProv) {
+		for _, k := range genAllRegencies(g.regenciesByProv) {
 			d := newGenPlace(g.all[k])
 			d.Province = genParentPlace(g.all[genProvinceOf(k)])
 			writeGenJSONIndent(filepath.Join(g.outDir, "regencies", k+".json"), genResponse(d, 2))
@@ -605,6 +605,24 @@ func genSortedKodeKeys(m map[string][]string) []string {
 	}
 	sort.Strings(keys)
 	return keys
+}
+
+func genAllRegencies(m map[string][]string) []string {
+	var out []string
+	for _, ks := range m {
+		out = append(out, ks...)
+	}
+	sort.Strings(out)
+	return out
+}
+
+func genAllDistricts(m map[string][]string) []string {
+	var out []string
+	for _, ks := range m {
+		out = append(out, ks...)
+	}
+	sort.Strings(out)
+	return out
 }
 
 func repoRoot() string {
