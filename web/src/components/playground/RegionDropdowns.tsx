@@ -108,6 +108,7 @@ export function RegionDropdowns({
         options={districts}
         placeholder="Pilih Kecamatan"
         disabled={!regCode}
+        withMeta
       />
       <Select
         label="Kelurahan"
@@ -116,6 +117,7 @@ export function RegionDropdowns({
         options={villages}
         placeholder="Pilih Kelurahan"
         disabled={!distCode}
+        withMeta
       />
     </div>
   );

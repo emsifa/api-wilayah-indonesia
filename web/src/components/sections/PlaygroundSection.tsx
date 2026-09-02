@@ -49,6 +49,10 @@ export function PlaygroundSection() {
   const [districts, setDistricts] = useState<Region[]>([]);
   const [villages, setVillages] = useState<Region[]>([]);
 
+  // Detail untuk kecamatan & kelurahan yang dipilih (punya lat/lng)
+  const [selectedDist, setSelectedDist] = useState<Region | null>(null);
+  const [selectedVill, setSelectedVill] = useState<Region | null>(null);
+
   // polygon multi-ring: [ [ [lat,lng], ... ], [ [lat,lng], ... ] ] untuk Jakarta dkk
   const [polygon, setPolygon] = useState<[number, number][][] | null>(null);
 
@@ -179,10 +183,45 @@ export function PlaygroundSection() {
     };
   }, [distCode]);
 
-  // Fetch polygon untuk provinsi & kabupaten — fetch langsung (tanpa delay), biar flyTo nggak ketahan
-  // Animasi polygon (fitBounds) akan ditunda di IndonesiaMap sampai flyTo selesai
+  // Fetch detail kecamatan terpilih (lat/lng)
   useEffect(() => {
-    const code = regCode || provCode;
+    if (!distCode) {
+      setSelectedDist(null);
+      return;
+    }
+    let cancelled = false;
+    fetch(`${BASE}/districts/${distCode}.json`)
+      .then((r) => r.json())
+      .then((json) => {
+        if (cancelled) return;
+        const d: ApiPlace = json.data;
+        setSelectedDist({ code: d.id, name: d.name, lat: d.lat ?? 0, lng: d.lng ?? 0 });
+      })
+      .catch(() => { if (!cancelled) setSelectedDist(null); });
+    return () => { cancelled = true; };
+  }, [distCode]);
+
+  // Fetch detail kelurahan terpilih (lat/lng)
+  useEffect(() => {
+    if (!villCode) {
+      setSelectedVill(null);
+      return;
+    }
+    let cancelled = false;
+    fetch(`${BASE}/villages/${villCode}.json`)
+      .then((r) => r.json())
+      .then((json) => {
+        if (cancelled) return;
+        const v: ApiPlace = json.data;
+        setSelectedVill({ code: v.id, name: v.name, lat: v.lat ?? 0, lng: v.lng ?? 0 });
+      })
+      .catch(() => { if (!cancelled) setSelectedVill(null); });
+    return () => { cancelled = true; };
+  }, [villCode]);
+
+  // Fetch polygon untuk semua level yang punya paths endpoint
+  useEffect(() => {
+    const code = villCode || distCode || regCode || provCode;
     if (!code) {
       setPolygon(null);
       return;
@@ -223,17 +262,18 @@ export function PlaygroundSection() {
     return () => {
       cancelled = true;
     };
-  }, [provCode, regCode]);
+  }, [provCode, regCode, distCode, villCode]);
 
-  // Untuk map: hanya provinsi & kab/kota yang nge-zoom (punya lat/lng + polygon).
-  // Kecamatan & kelurahan sengaja tidak nge-zoom biar tidak misleading.
+  // Untuk map: zoom ke level terdalam yang tersedia
   const selectedForMap: Region | null = useMemo(() => {
-    const prov = findRegion(provCode, provinces);
+    if (villCode && selectedVill) return selectedVill;
+    if (distCode && selectedDist) return selectedDist;
     const reg = findRegion(regCode, regencies);
     if (reg) return reg;
+    const prov = findRegion(provCode, provinces);
     if (prov) return prov;
     return null;
-  }, [provCode, regCode, provinces, regencies]);
+  }, [provCode, regCode, distCode, villCode, provinces, regencies, selectedDist, selectedVill]);
 
   // Badge tetap tampilkan kecamatan/kelurahan terpilih (dari breadcrumb)
   const selectedForBadge: Region | null = useMemo(() => {
@@ -247,7 +287,7 @@ export function PlaygroundSection() {
     return prov ?? null;
   }, [provCode, regCode, distCode, villCode, provinces, regencies, districts, villages]);
 
-  const zoom = regCode ? 10 : provCode ? 8 : 5;
+  const zoom = villCode ? 13 : distCode ? 12 : regCode ? 10 : provCode ? 8 : 5;
 
   const breadcrumbParts = [
     provCode ? findRegion(provCode, provinces)?.name : null,
