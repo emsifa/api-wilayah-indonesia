@@ -1,0 +1,74 @@
+name: deploy
+on:
+  schedule: [{ cron: "0 0 * * 0" }]
+  workflow_dispatch: {}
+  push:
+    branches: [main, v2]
+    paths: ["web/**", "tools/**", "go.mod", ".github/workflows/deploy.yml"]
+
+concurrency: { group: deploy, cancel-in-progress: false }
+permissions: { contents: write }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build Astro (web/)
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: true
+
+      - name: Extract CSV (ephemeral)
+        run: |
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah/refs/heads/master/db/wilayah.sql
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah/refs/heads/master/db/wilayah_level_1_2.sql
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah_kodepos/refs/heads/main/db/wilayah_kodepos.sql
+
+      - name: Generate API
+        run: |
+          go run ./tools generate-static-api -v
+          echo "api size:"
+          du -sh api
+          echo "api files:"
+          find api -type f | wc -l
+
+      - name: Assemble publish dir
+        run: |
+          mkdir -p deploy
+          cp -r web/dist/* deploy/
+          touch deploy/.nojekyll
+          mkdir -p deploy/v2
+          cp -r api/* deploy/v2/
+          echo "deploy root:"
+          ls -lh deploy | head -30
+          echo "deploy/v2:"
+          ls -lh deploy/v2 | head -20
+          echo "deploy/v2 files:"
+          find deploy/v2 -type f | wc -l
+
+      - name: Deploy to gh-pages (keep old api/)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
+          publish_branch: gh-pages
+          keep_files: true
+          user_name: "github-actions[bot]"
+          user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_message: "deploy: ${{ github.sha }} [cron]"
