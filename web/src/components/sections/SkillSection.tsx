@@ -1,36 +1,30 @@
 import { useState } from "react";
-import { Copy, Check, Sparkles, Bot, FileText, ArrowRight } from "lucide-react";
-import { CodeBlock } from "../ui/CodeBlock";
+import { Copy, Check, Sparkles, ArrowRight } from "lucide-react";
 
 const skillPreview = `---
 name: wilayah-indonesia
-description: Data wilayah Indonesia lengkap untuk AI Agent
+description: Schemas for Indonesian administrative data — API responses and downloadable files for app integration
 ---
 
-# SKILL — Data Wilayah Indonesia
+# SKILL — Wilayah Indonesia
 
-Kamu memiliki akses ke API statis data wilayah Indonesia:
+## API — What You Get
 
-Base URL: https://www.emsifa.com/api-data-wilayah-v2/v2
+\`\`\`json
+{ "data": <object|array>, "meta": { "generated_at": "...", "level": 0 } }
+\`\`\`
+- Provinces/regencies: {id, name, capital, lat, lng, elv, tz, population, total_area}
+- Districts/villages (list): {id, name} or {id, name, postal_code}
 
-Endpoints:
-- GET /stats.json → total wilayah
-- GET /provinces.json → list provinsi
-- GET /provinces/{code}.json → detail provinsi
-- GET /regencies/{province_code}.json → list kab/kota
-- GET /districts/{regency_code}.json → list kecamatan
-- GET /villages/{district_code}.json → list kelurahan
-- GET /postal-codes/{code}.json → by kode pos
-- GET /paths/{code}.json → polygon GeoJSON
+Endpoints: /stats.json | /provinces.json | /regencies/{code}.json | /districts/{code}.json | /villages/{code}.json | /postal-codes/{code}.json | /paths/{code}.json
 
-Aturan:
-- Selalu fetch JSON asli, jangan halusinasi kode wilayah
-- Kode format: provinsi 2 digit (32), kab/kota 5 digit (32.73), kecamatan 8 digit (32.73.01)
-- Jika user tanya "kecamatan di Bandung", fetch /regencies/32.json lalu /districts/32.73.json
+## Download — What You Get
 
-Contoh prompt:
-> "Carikan semua kecamatan di Kota Bandung"
-> → fetch /districts/32.73.json → tampilkan list
+- wilayah.csv: kode,nama (11,Aceh → 11.01.01.2001,Keude Bakongan)
+- Rich: kode,nama,ibukota,lat,lng,elv,tz,luas,penduduk,path
+- wilayah_kodepos.csv: kode,kodepos
+
+Full: https://www.emsifa.com/api-data-wilayah-v2/SKILL.md
 `;
 
 export function SkillSection() {
@@ -77,36 +71,6 @@ export function SkillSection() {
               itu contekan buat AI biar nggak halu. Daripada nebak kode wilayah,
               dia bakal fetch JSON beneran dari API statis. Aman.
             </p>
-
-            <div className="mt-6 space-y-3">
-              <div className="flex gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white">
-                  <Bot size={16} />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-900">
-                    Buat AI kesayangan lo
-                  </div>
-                  <div className="text-xs leading-relaxed text-slate-500">
-                    Claude Code, Cursor, Codex, OpenCode — yang ada fitur skills / instructions, masuk semua.
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white">
-                  <FileText size={16} />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-900">
-                    Anti halu
-                  </div>
-                  <div className="text-xs leading-relaxed text-slate-500">
-                    Wajib fetch endpoint asli. Kode wilayah valid terus, nggak ada cerita nebak-nebak.
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div className="mt-6">
               <div className="text-xs font-bold tracking-widest text-slate-500 uppercase">

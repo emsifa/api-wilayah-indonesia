@@ -7,11 +7,12 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[11px] font-extrabold tracking-tighter text-slate-900">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-[11px] font-extrabold tracking-tighter text-slate-900">
                 W
               </div>
-              <span className="text-sm font-bold tracking-tight text-white">
-                wilayah<span className="text-emerald-400">.id</span>
+              <span className="flex flex-col leading-none">
+                <span className="text-sm font-bold tracking-tight text-white">API Statis Wilayah Indonesia</span>
+                <span className="text-[11px] font-medium tracking-wide text-slate-400">by emsifa</span>
               </span>
               <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-white/70 uppercase">
                 v2
