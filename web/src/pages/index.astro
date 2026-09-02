@@ -1,17 +1,20 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
+import { PlaygroundSection } from "../components/sections/PlaygroundSection";
+import { ApiSection } from "../components/sections/ApiSection";
+import { CliSection } from "../components/sections/CliSection";
+import { SkillSection } from "../components/sections/SkillSection";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  <Header client:load />
+  <main class="relative bg-slate-950">
+    <PlaygroundSection client:only="react" />
+    <ApiSection client:load />
+    <CliSection client:load />
+    <SkillSection client:load />
+    <Footer client:load />
+  </main>
+</Layout>

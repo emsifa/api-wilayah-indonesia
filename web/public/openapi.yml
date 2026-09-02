@@ -1,0 +1,310 @@
+openapi: 3.1.0
+info:
+  title: Wilayah Indonesia API
+  description: |
+    API statis data wilayah Indonesia — 38 Provinsi, 514 Kab/Kota,
+    7.285 Kecamatan, 83.762 Kelurahan + kode pos & polygon.
+    Di-generate oleh tools/generate_static_api.go (genResponse { data, meta, level }).
+    Static hosting di GitHub Pages via www.emsifa.com, tanpa API key (CORS enabled).
+  version: 2.0.0
+  contact:
+    name: emsifa
+    url: https://github.com/emsifa/api-data-wilayah-v2
+  license:
+    name: MIT
+servers:
+  - url: https://www.emsifa.com/api-data-wilayah-v2/v2
+    description: Production (www.emsifa.com — custom domain GitHub Pages, CORS enabled)
+
+paths:
+  /stats.json:
+    get:
+      summary: Total wilayah
+      description: Mengambil total provinsi, kab/kota, kecamatan, kelurahan, kode pos, luas, populasi
+      operationId: getStats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+              example:
+                data:
+                  total_area: 1889518.25
+                  total_districts: 7285
+                  total_paths: 551
+                  total_population: 284973643
+                  total_postal_codes: 10632
+                  total_provinces: 38
+                  total_regencies: 514
+                  total_villages: 83762
+                meta: { generated_at: "2026-09-02T03:35:49Z", level: 0 }
+
+  /provinces.json:
+    get:
+      summary: List provinsi
+      description: Daftar semua provinsi (level 1) dengan capital, lat, lng, elv, tz, population, total_area
+      operationId: listProvinces
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlacesResponse"
+
+  /provinces/{code}.json:
+    get:
+      summary: Detail provinsi
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema: { type: string, example: "32" }
+          description: Kode provinsi 2 digit (contoh 32 = Jawa Barat)
+      operationId: getProvince
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceResponse"
+        "404":
+          description: Not Found
+
+  /regencies/{province_code}.json:
+    get:
+      summary: List kab/kota by provinsi
+      parameters:
+        - name: province_code
+          in: path
+          required: true
+          schema: { type: string, example: "32" }
+      operationId: listRegenciesByProvince
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlacesResponse"
+
+  /regencies/{regency_code}.json:
+    get:
+      summary: Detail kab/kota
+      parameters:
+        - name: regency_code
+          in: path
+          required: true
+          schema: { type: string, example: "32.73" }
+      operationId: getRegency
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceResponse"
+
+  /districts/{regency_code}.json:
+    get:
+      summary: List kecamatan by kab/kota
+      description: Mengembalikan genShortItem[] (id, name)
+      parameters:
+        - name: regency_code
+          in: path
+          required: true
+          schema: { type: string, example: "32.73" }
+      operationId: listDistrictsByRegency
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortItemsResponse"
+
+  /districts/{district_code}.json:
+    get:
+      summary: Detail kecamatan
+      parameters:
+        - name: district_code
+          in: path
+          required: true
+          schema: { type: string, example: "32.73.01" }
+      operationId: getDistrict
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceResponse"
+
+  /villages/{district_code}.json:
+    get:
+      summary: List kelurahan by kecamatan
+      description: genShortItem[] dengan postal_code
+      parameters:
+        - name: district_code
+          in: path
+          required: true
+          schema: { type: string, example: "32.73.01" }
+      operationId: listVillagesByDistrict
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortItemsResponse"
+
+  /villages/{village_code}.json:
+    get:
+      summary: Detail kelurahan
+      parameters:
+        - name: village_code
+          in: path
+          required: true
+          schema: { type: string, example: "32.73.01.1001" }
+      operationId: getVillage
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceResponse"
+
+  /postal-codes/{postal_code}.json:
+    get:
+      summary: Cari kelurahan by kode pos
+      parameters:
+        - name: postal_code
+          in: path
+          required: true
+          schema: { type: string, example: "40152" }
+      operationId: listByPostalCode
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlacesResponse"
+
+  /paths/{code}.json:
+    get:
+      summary: Polygon provinsi/kab-kota
+      description: Compact JSON { id, name, path: number[][] } — level = genLevelCount(code)+1
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema: { type: string, example: "32" }
+      operationId: getPath
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PathResponse"
+
+components:
+  schemas:
+    Meta:
+      type: object
+      required: [generated_at, level]
+      properties:
+        generated_at: { type: string, format: date-time, example: "2026-09-02T03:35:49Z" }
+        level: { type: integer, example: 1, description: "0=stats, 1=prov, 2=reg, 3=dist, 4=vill/postal" }
+
+    Place:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: string, example: "32.73.01.1001" }
+        name: { type: string, example: "Sukarasa" }
+        capital: { type: string, example: "Bandung" }
+        lat: { type: number, example: -6.90 }
+        lng: { type: number, example: 107.61 }
+        elv: { type: number, example: 739 }
+        tz: { type: integer, example: 7 }
+        population: { type: integer, example: 51316378 }
+        total_area: { type: number, example: 37053.33 }
+        postal_code: { type: string, example: "40152" }
+        province: { $ref: "#/components/schemas/ShortItem" }
+        regency: { $ref: "#/components/schemas/ShortItem" }
+        district: { $ref: "#/components/schemas/ShortItem" }
+
+    ShortItem:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: string, example: "32.73.01" }
+        name: { type: string, example: "Sukasari" }
+        postal_code: { type: string, example: "40152" }
+
+    PlacesResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Place" }
+        meta: { $ref: "#/components/schemas/Meta" }
+
+    PlaceResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: "#/components/schemas/Place" }
+        meta: { $ref: "#/components/schemas/Meta" }
+
+    ShortItemsResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/ShortItem" }
+        meta: { $ref: "#/components/schemas/Meta" }
+
+    StatsResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          properties:
+            total_area: { type: number, example: 1889518.25 }
+            total_districts: { type: integer, example: 7285 }
+            total_paths: { type: integer, example: 551 }
+            total_population: { type: integer, example: 284973643 }
+            total_postal_codes: { type: integer, example: 10632 }
+            total_provinces: { type: integer, example: 38 }
+            total_regencies: { type: integer, example: 514 }
+            total_villages: { type: integer, example: 83762 }
+        meta: { $ref: "#/components/schemas/Meta" }
+
+    PathResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [id, name, path]
+          properties:
+            id: { type: string, example: "32" }
+            name: { type: string, example: "Jawa Barat" }
+            path:
+              type: array
+              description: Polygon coords [lat, lng][]
+              items:
+                type: array
+                items: { type: number }
+                example: [-6.98, 106.39]
+        meta: { $ref: "#/components/schemas/Meta" }
