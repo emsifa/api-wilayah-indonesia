@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { Copy, Check, ExternalLink, Download } from "lucide-react";
 import { AccordionItem } from "../ui/Accordion";
-import { JsonHighlighter, CurlHighlighter } from "../ui/JsonHighlighter";
-import { apiEndpoints } from "../api/apiSpec";
+import { JsonHighlighter } from "../ui/JsonHighlighter";
+import { apiEndpoints, type SnippetLang } from "../api/apiSpec";
+
+const LANGS: { key: SnippetLang; label: string }[] = [
+  { key: "curl", label: "curl" },
+  { key: "fetch", label: "Fetch" },
+  { key: "axios", label: "Axios" },
+  { key: "laravel", label: "Laravel" },
+  { key: "go", label: "Go" },
+  { key: "python", label: "Python" },
+  { key: "php", label: "PHP" },
+  { key: "dart", label: "Dart" },
+];
 
 export function ApiSection() {
   const [copied, setCopied] = useState<string | null>(null);
+  const [activeLang, setActiveLang] = useState<SnippetLang>("curl");
 
   const copy = async (text: string, key: string) => {
     await navigator.clipboard.writeText(text);
@@ -87,23 +99,65 @@ export function ApiSection() {
             >
               <div className="space-y-4">
                 <div>
-                  <div className="mb-2 flex items-center justify-between">
+                  {/* Header row: label + lang selector + copy button */}
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
                     <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">
                       Request
                     </span>
-                    <button
-                      onClick={() => copy(ep.curl, ep.path + "-curl")}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
+
+                    {/* Tab pills — desktop */}
+                    <div className="hidden md:flex items-center gap-0.5 rounded-xl bg-slate-100 p-1">
+                      {LANGS.map((l) => (
+                        <button
+                          key={l.key}
+                          onClick={() => setActiveLang(l.key)}
+                          className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                            activeLang === l.key
+                              ? "bg-white text-slate-900 shadow-sm"
+                              : "text-slate-500 hover:text-slate-700"
+                          }`}
+                        >
+                          {l.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Dropdown — mobile */}
+                    <select
+                      value={activeLang}
+                      onChange={(e) => setActiveLang(e.target.value as SnippetLang)}
+                      className="md:hidden rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700 cursor-pointer"
                     >
-                      {copied === ep.path + "-curl" ? (
+                      {LANGS.map((l) => (
+                        <option key={l.key} value={l.key}>
+                          {l.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Copy button */}
+                    <button
+                      onClick={() => copy(ep.snippets[activeLang], ep.path + "-code")}
+                      className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
+                    >
+                      {copied === ep.path + "-code" ? (
                         <Check size={12} className="text-emerald-600" />
                       ) : (
                         <Copy size={12} />
                       )}
-                      Copy curl
+                      Copy {LANGS.find((l) => l.key === activeLang)?.label}
                     </button>
                   </div>
-                  <CurlHighlighter code={ep.curl} />
+
+                  {/* Code block */}
+                  <pre className="overflow-x-auto rounded-xl bg-slate-950 p-4 text-xs leading-relaxed">
+                    <code
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      className="text-slate-200 whitespace-pre"
+                    >
+                      {ep.snippets[activeLang]}
+                    </code>
+                  </pre>
                 </div>
 
                 <div>

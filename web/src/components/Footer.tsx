@@ -11,17 +11,22 @@ export function Footer() {
                 W
               </div>
               <span className="flex flex-col leading-none">
-                <span className="text-sm font-bold tracking-tight text-white">API Statis Wilayah Indonesia</span>
-                <span className="text-[11px] font-medium tracking-wide text-slate-400">by emsifa</span>
+                <span className="text-sm font-bold tracking-tight text-white">
+                  API Statis Wilayah Indonesia
+                </span>
+                <span className="text-[11px] font-medium tracking-wide text-slate-400">
+                  by emsifa
+                </span>
               </span>
               <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-white/70 uppercase">
                 v2
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-              Data wilayah paling lengkap se-Indonesia — 38 Provinsi, 514 Kab/Kota,
-              7.285 Kecamatan, 83.762 Kelurahan. Gratis, open source, nggak perlu
-              backend. Colok aja ke Laravel, Prisma, Drizzle, atau AI Agent lo.
+              Data wilayah paling lengkap se-Indonesia — 38 Provinsi, 514
+              Kab/Kota, 7.285 Kecamatan, 83.762 Kelurahan. Gratis, open source,
+              nggak perlu backend. Colok aja ke Laravel, Prisma, Drizzle, atau
+              AI Agent kamu.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-300">
@@ -97,13 +102,18 @@ export function Footer() {
                   cahyadsn/wilayah_kodepos
                 </a>
               </li>
-              <li className="text-slate-500">Polygon &amp; koordinat dari BPS &amp; OSM — udah dirapiin</li>
+              <li className="text-slate-500">
+                Polygon &amp; koordinat dari BPS &amp; OSM — udah dirapiin
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs md:flex-row md:items-center">
-          <p>© 2026 Data Wilayah Indonesia — MIT License. Built with Astro + React + Tailwind.</p>
+          <p>
+            © 2026 Data Wilayah Indonesia — MIT License. Built with Astro +
+            React + Tailwind.
+          </p>
           <a
             href="#"
             onClick={(e) => {

@@ -76,9 +76,8 @@ export function CliSection() {
             Self-host datanya sendiri
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-400">
-            Nggak mau tergantung API orang? Download aja full datanya dan host
-            sendiri — mau di VPS, Vercel, atau Cloudflare, bebas atur, nggak
-            takut API mati.
+            Mau simpan datanya di aplikasi kamu? Download aja full datanya dan
+            host sendiri.
           </p>
         </div>
 
@@ -120,7 +119,11 @@ export function CliSection() {
               onClick={handleCopy}
               className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer"
             >
-              {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+              {copied ? (
+                <Check size={12} className="text-emerald-400" />
+              ) : (
+                <Copy size={12} />
+              )}
               {copied ? "Copied!" : "Copy"}
             </button>
           </div>
@@ -153,7 +156,8 @@ export function CliSection() {
           <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-slate-300">
             npx wilayah download
           </code>{" "}
-          di GitHub Actions / cron — tiap push auto tarik data terbaru buat self-host.
+          di GitHub Actions / cron — tiap push auto tarik data terbaru buat
+          self-host.
         </p>
       </div>
     </section>

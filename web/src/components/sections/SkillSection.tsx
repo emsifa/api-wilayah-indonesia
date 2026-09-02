@@ -60,8 +60,8 @@ export function SkillSection() {
             </div>
 
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-              Bikin AI lo
-              <span className="block text-amber-600">nggak ngarang wilayah</span>
+              Bikin AI kamu
+              <span className="block text-amber-600">nggak ngarang.</span>
             </h2>
 
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -84,10 +84,16 @@ export function SkillSection() {
                       1. Paling gampang — lewat CLI
                     </span>
                     <button
-                      onClick={() => copy("npx wilayah skill --agent claude", "cli")}
+                      onClick={() =>
+                        copy("npx wilayah skill --agent claude", "cli")
+                      }
                       className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium hover:bg-white cursor-pointer"
                     >
-                      {copied === "cli" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                      {copied === "cli" ? (
+                        <Check size={12} className="text-emerald-600" />
+                      ) : (
+                        <Copy size={12} />
+                      )}
                       {copied === "cli" ? "Copied" : "Copy"}
                     </button>
                   </div>
@@ -144,7 +150,11 @@ export function SkillSection() {
                 onClick={() => copy(skillPreview, "preview")}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer"
               >
-                {copied === "preview" ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                {copied === "preview" ? (
+                  <Check size={12} className="text-emerald-400" />
+                ) : (
+                  <Copy size={12} />
+                )}
                 {copied === "preview" ? "Copied!" : "Copy"}
               </button>
             </div>
@@ -157,10 +167,12 @@ export function SkillSection() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-xs leading-relaxed text-amber-900 md:px-6">
-          <span className="font-semibold">Coba tanya AI lo gini:</span> “Carikan
-          semua kecamatan di Kota Bandung” → dia bakal{" "}
-          <code className="rounded bg-white px-1 py-0.5 font-mono">fetch /districts/32.73.json</code>{" "}
-          terus kasih list beneran, bukan karangan.
+          <span className="font-semibold">Coba tanya AI kamu gini:</span>{" "}
+          “Carikan semua kecamatan di Kota Bandung” → dia bakal{" "}
+          <code className="rounded bg-white px-1 py-0.5 font-mono">
+            fetch /districts/32.73.json
+          </code>{" "}
+          terus kasih list beneran, bukan ngarang.
         </div>
       </div>
     </section>
