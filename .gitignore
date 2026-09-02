@@ -1,6 +1,6 @@
 node_modules/
 web/node_modules/
 web/dist/
-api/
-data/
-deploy/
+/api/
+/data/
+/deploy/
