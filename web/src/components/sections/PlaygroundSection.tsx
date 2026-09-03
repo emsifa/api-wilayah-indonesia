@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-import { MapPin, Search, RotateCcw, ChevronRight } from "lucide-react";
-import { IndonesiaMap } from "../playground/IndonesiaMap";
+import { MapPin, Search, RotateCcw, ChevronRight, Map, Satellite } from "lucide-react";
+import { IndonesiaMap, type TileType } from "../playground/IndonesiaMap";
 import { RegionDropdowns } from "../playground/RegionDropdowns";
 import type { Region } from "../playground/types";
 
@@ -57,6 +57,8 @@ export function PlaygroundSection() {
   const [polygon, setPolygon] = useState<[number, number][][] | null>(null);
 
   const [fetchMs, setFetchMs] = useState<number | null>(null);
+
+  const [tile, setTile] = useState<TileType>("osm");
 
   const [loadingProv, setLoadingProv] = useState(true);
   const [loadingReg, setLoadingReg] = useState(false);
@@ -329,13 +331,13 @@ export function PlaygroundSection() {
     >
       {/* Full-size map — tanpa overlay gelap/terang, playground full bleed */}
       <div className="absolute inset-0 z-0">
-        <IndonesiaMap selected={selectedForMap} zoom={zoom} polygon={polygon} />
+        <IndonesiaMap selected={selectedForMap} zoom={zoom} polygon={polygon} tile={tile} />
       </div>
 
       {/* Overlay — breadcrumb + dropdown, sisanya pointer-events-none agar zoom/pan map tetap klikable */}
       <div className="pointer-events-none relative z-10 flex h-full flex-col justify-between px-6 pt-24 pb-6 md:px-8 md:pt-24 md:pb-8">
-        {/* Top breadcrumb — center */}
-        <div className="flex justify-center">
+        {/* Top — breadcrumb + tile toggle */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <div className="pointer-events-auto inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-white/95 px-4 py-2 text-xs font-medium text-slate-700 shadow-lg backdrop-blur md:text-sm">
             <MapPin size={14} className="shrink-0 text-emerald-600" />
             {breadcrumbParts.length > 0 ? (
@@ -352,6 +354,28 @@ export function PlaygroundSection() {
             ) : (
               <span className="truncate">Coba pilih wilayah di bawah — peta bakal nge-zoom sendiri ✨</span>
             )}
+          </div>
+          <div className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full border border-slate-200 bg-white/95 p-1 shadow-lg backdrop-blur">
+            <button
+              onClick={() => setTile("osm")}
+              aria-label="Street map"
+              title="Street"
+              className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition cursor-pointer ${
+                tile === "osm" ? "bg-slate-900 text-white shadow" : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+              }`}
+            >
+              <Map size={14} />
+            </button>
+            <button
+              onClick={() => setTile("esri")}
+              aria-label="Satellite"
+              title="Satellite"
+              className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition cursor-pointer ${
+                tile === "esri" ? "bg-slate-900 text-white shadow" : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+              }`}
+            >
+              <Satellite size={14} />
+            </button>
           </div>
         </div>
 

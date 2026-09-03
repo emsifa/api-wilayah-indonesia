@@ -62,14 +62,18 @@ function FitPolygon({ positions }: { positions: [number, number][][] | null }) {
   return null;
 }
 
+export type TileType = "osm" | "esri";
+
 export function IndonesiaMap({
   selected,
   zoom,
   polygon,
+  tile = "osm",
 }: {
   selected: Region | null;
   zoom: number;
   polygon?: [number, number][][] | null;
+  tile?: TileType;
 }) {
   return (
     <MapContainer
@@ -79,10 +83,17 @@ export function IndonesiaMap({
       className="h-full w-full"
       style={{ background: "#e2e8f0" }}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      {tile === "esri" ? (
+        <TileLayer
+          attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        />
+      ) : (
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+      )}
       {polygon &&
         polygon.map((ring, i) => (
           <Polygon
