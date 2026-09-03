@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Sparkles, ArrowRight } from "lucide-react";
+import { Copy, Check, Sparkles, ArrowRight, MessageCircle, Bot } from "lucide-react";
 
 export function SkillSection() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -111,6 +111,26 @@ export function SkillSection() {
                   </a>
                 </div>
               </div>
+
+              {/* Tip — moved below manual card with icon */}
+              <div className="mt-4 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 md:px-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
+                  <MessageCircle size={16} />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900">
+                    <Bot size={12} className="text-amber-700" />
+                    Coba tanya AI kamu gini:
+                  </div>
+                  <p className="mt-1 text-xs leading-relaxed text-amber-900">
+                    “Carikan semua kecamatan di Kota Bandung” → dia bakal{" "}
+                    <code className="rounded bg-white px-1 py-0.5 font-mono text-amber-900">
+                      fetch /districts/32.73.json
+                    </code>{" "}
+                    terus kasih list beneran, bukan ngarang.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -124,15 +144,6 @@ export function SkillSection() {
               decoding="async"
             />
           </div>
-        </div>
-
-        <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-xs leading-relaxed text-amber-900 md:px-6">
-          <span className="font-semibold">Coba tanya AI kamu gini:</span>{" "}
-          “Carikan semua kecamatan di Kota Bandung” → dia bakal{" "}
-          <code className="rounded bg-white px-1 py-0.5 font-mono">
-            fetch /districts/32.73.json
-          </code>{" "}
-          terus kasih list beneran, bukan ngarang.
         </div>
       </div>
     </section>

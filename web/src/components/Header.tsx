@@ -6,6 +6,7 @@ const links = [
   { label: "API", href: "#api" },
   { label: "CLI", href: "#cli" },
   { label: "SKILL", href: "#skill" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 function formatCount(n: number) {
