@@ -508,7 +508,7 @@ final village = jsonDecode(res.body)["data"] as Map;`,
   },
   {
     method: "GET",
-    path: "/postal-codes/{postal_id}.json",
+    path: "/postal-codes/{postal_code}.json",
     description:
       "Cari kelurahan by kode pos — misal 40152 tuh daerah mana aja (level 4)",
     curl: `curl ${BASE}/postal-codes/40152.json`,
@@ -566,9 +566,9 @@ final villages = jsonDecode(res.body)["data"] as List;`,
   },
   {
     method: "GET",
-    path: "/paths/{province_or_regency_id}.json",
+    path: "/paths/{region_id}.json",
     description:
-      "Butuh polygon buat peta? Ambil garis batas provinsi/kab-kota di sini (compact JSON)",
+      "Butuh polygon buat peta? Ambil garis batas wilayah di sini — support semua level: provinsi, kab/kota, kecamatan, kelurahan (compact JSON)",
     curl: `curl ${BASE}/paths/32.json`,
     snippets: {
       curl: `curl ${BASE}/paths/32.json`,
@@ -599,7 +599,6 @@ final path = jsonDecode(res.body)["data"] as Map;`,
     response: `{
   "data": {
     "id": "32",
-    "name": "Jawa Barat",
     "path": [
       [-6.980237, 106.395627],
       [-6.934294, 106.390694],
@@ -608,7 +607,7 @@ final path = jsonDecode(res.body)["data"] as Map;`,
     ]
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
+    "updated_at": "2026-09-03",
     "level": 1
   }
 }`,
