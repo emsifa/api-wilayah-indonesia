@@ -307,7 +307,7 @@ final regency = jsonDecode(res.body)["data"] as Map;`,
     method: "GET",
     path: "/districts/{regency_id}.json",
     description:
-      "Daftar kecamatan di kab/kota tertentu — ringkas id + nama aja (level 3)",
+      "Daftar kecamatan di kab/kota tertentu — lengkap dengan koordinat lat/lng (level 3)",
     curl: `curl ${BASE}/districts/32.73.json`,
     snippets: {
       curl: `curl ${BASE}/districts/32.73.json`,
@@ -337,15 +337,15 @@ final districts = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01", "name": "Sukasari" },
-    { "id": "32.73.02", "name": "Coblong" },
-    { "id": "32.73.03", "name": "Babakan Ciparay" },
-    { "id": "32.73.04", "name": "Bojongloa Kaler" },
-    { "id": "32.73.05", "name": "Andir" }
+    { "id": "32.73.01", "name": "Sukasari", "lat": -6.873456, "lng": 107.591234 },
+    { "id": "32.73.02", "name": "Coblong", "lat": -6.882345, "lng": 107.603456 },
+    { "id": "32.73.03", "name": "Babakan Ciparay", "lat": -6.891234, "lng": 107.585678 },
+    { "id": "32.73.04", "name": "Bojongloa Kaler", "lat": -6.901234, "lng": 107.578901 },
+    { "id": "32.73.05", "name": "Andir", "lat": -6.912345, "lng": 107.592345 }
     // ... 25 more
   ],
   "meta": {
-    "generated_at": "2026-09-02T03:35:45Z",
+    "updated_at": "2026-09-03",
     "level": 3
   }
 }`,
@@ -354,7 +354,7 @@ final districts = jsonDecode(res.body)["data"] as List;`,
     method: "GET",
     path: "/districts/{district_id}.json",
     description:
-      "Detail satu kecamatan — plus tau dia dari provinsi & kab/kota mana (level 3)",
+      "Detail satu kecamatan — plus tau dia dari provinsi & kab/kota mana, lengkap dengan koordinat (level 3)",
     curl: `curl ${BASE}/districts/32.73.01.json`,
     snippets: {
       curl: `curl ${BASE}/districts/32.73.01.json`,
@@ -386,6 +386,8 @@ final district = jsonDecode(res.body)["data"] as Map;`,
   "data": {
     "id": "32.73.01",
     "name": "Sukasari",
+    "lat": -6.873456,
+    "lng": 107.591234,
     "province": {
       "id": "32",
       "name": "Jawa Barat"
@@ -396,7 +398,7 @@ final district = jsonDecode(res.body)["data"] as Map;`,
     }
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:45Z",
+    "updated_at": "2026-09-03",
     "level": 3
   }
 }`,
@@ -405,7 +407,7 @@ final district = jsonDecode(res.body)["data"] as Map;`,
     method: "GET",
     path: "/villages/{district_id}.json",
     description:
-      "Daftar kelurahan/desa di kecamatan itu — udah include kode pos (level 4)",
+      "Daftar kelurahan/desa di kecamatan itu — udah include kode pos dan koordinat (level 4)",
     curl: `curl ${BASE}/villages/32.73.01.json`,
     snippets: {
       curl: `curl ${BASE}/villages/32.73.01.json`,
@@ -435,13 +437,13 @@ final villages = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152" },
-    { "id": "32.73.01.1002", "name": "Gegerkalong", "postal_code": "40153" },
-    { "id": "32.73.01.1003", "name": "Isola", "postal_code": "40154" },
-    { "id": "32.73.01.1004", "name": "Sarijadi", "postal_code": "40151" }
+    { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152", "lat": -6.873456, "lng": 107.591234 },
+    { "id": "32.73.01.1002", "name": "Gegerkalong", "postal_code": "40153", "lat": -6.882345, "lng": 107.603456 },
+    { "id": "32.73.01.1003", "name": "Isola", "postal_code": "40154", "lat": -6.891234, "lng": 107.585678 },
+    { "id": "32.73.01.1004", "name": "Sarijadi", "postal_code": "40151", "lat": -6.901234, "lng": 107.578901 }
   ],
   "meta": {
-    "generated_at": "2026-09-02T03:35:45Z",
+    "updated_at": "2026-09-03",
     "level": 4
   }
 }`,
@@ -450,7 +452,7 @@ final villages = jsonDecode(res.body)["data"] as List;`,
     method: "GET",
     path: "/villages/{village_id}.json",
     description:
-      "Detail satu kelurahan/desa — lengkap kode pos + provinsi, kab/kota, kecamatan (level 4)",
+      "Detail satu kelurahan/desa — lengkap kode pos, koordinat + provinsi, kab/kota, kecamatan (level 4)",
     curl: `curl ${BASE}/villages/32.73.01.1001.json`,
     snippets: {
       curl: `curl ${BASE}/villages/32.73.01.1001.json`,
@@ -483,6 +485,8 @@ final village = jsonDecode(res.body)["data"] as Map;`,
     "id": "32.73.01.1001",
     "name": "Sukarasa",
     "postal_code": "40152",
+    "lat": -6.873456,
+    "lng": 107.591234,
     "province": {
       "id": "32",
       "name": "Jawa Barat"
@@ -497,7 +501,7 @@ final village = jsonDecode(res.body)["data"] as Map;`,
     }
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:46Z",
+    "updated_at": "2026-09-03",
     "level": 4
   }
 }`,

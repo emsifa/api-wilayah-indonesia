@@ -163,7 +163,7 @@ export function ApiSection() {
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">
-                      Response — genResponse {"{ data, meta }"}
+                      Response
                     </span>
                     <a
                       href={ep.curl.replace("curl ", "")}
