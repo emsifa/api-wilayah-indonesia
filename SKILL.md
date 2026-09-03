@@ -103,7 +103,12 @@ For lists, you get a compact form to keep files small:
   "total_postal_codes": 10632,
   "total_paths": 551,
   "total_population": 284973643,
-  "total_area": 1889518.25
+  "total_area": 1889518.25,
+  "total_endpoints": 201309,
+  "total_filesize": 300423246,
+  "total_filesize_human": "286.51 MB",
+  "total_disk_usage": 915771392,
+  "total_disk_usage_human": "873.35 MB"
 }
 ```
 
