@@ -1,32 +1,5 @@
 import { useState } from "react";
 import { Copy, Check, Sparkles, ArrowRight } from "lucide-react";
-import { MarkdownHighlighter } from "../ui/CodeHighlighter";
-
-const skillPreview = `---
-name: wilayah-indonesia
-description: Schemas for Indonesian administrative data — API responses and downloadable files for app integration
----
-
-# SKILL — Wilayah Indonesia
-
-## API — What You Get
-
-\`\`\`json
-{ "data": <object|array>, "meta": { "generated_at": "...", "level": 0 } }
-\`\`\`
-- Provinces/regencies: {id, name, capital, lat, lng, elv, tz, population, total_area}
-- Districts/villages (list): {id, name} or {id, name, postal_code}
-
-Endpoints: /stats.json | /provinces.json | /regencies/{code}.json | /districts/{code}.json | /villages/{code}.json | /postal-codes/{code}.json | /paths/{code}.json
-
-## Download — What You Get
-
-- wilayah.csv: kode,nama (11,Aceh → 11.01.01.2001,Keude Bakongan)
-- Rich: kode,nama,ibukota,lat,lng,elv,tz,luas,penduduk,path
-- wilayah_kodepos.csv: kode,kodepos
-
-Full: https://www.emsifa.com/api-data-wilayah-v2/SKILL.md
-`;
 
 export function SkillSection() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -141,27 +114,15 @@ export function SkillSection() {
             </div>
           </div>
 
-          {/* Right — preview */}
-          <div className="overflow-hidden rounded-[20px] border border-slate-200 bg-slate-950 shadow-xl">
-            <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-4 py-3">
-              <span className="font-mono text-xs font-semibold tracking-widest text-slate-400 uppercase">
-                SKILL.md Preview
-              </span>
-              <button
-                onClick={() => copy(skillPreview, "preview")}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer"
-              >
-                {copied === "preview" ? (
-                  <Check size={12} className="text-emerald-400" />
-                ) : (
-                  <Copy size={12} />
-                )}
-                {copied === "preview" ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <div className="max-h-[560px] overflow-auto p-4">
-              <MarkdownHighlighter code={skillPreview} />
-            </div>
+          {/* Right — illustration */}
+          <div className="relative flex items-center justify-center">
+            <img
+              src={`${import.meta.env.BASE_URL}skill_illustration.png`}
+              alt="SKILL.md illustration — robot with SKILL.md API usage and floating Indonesia polygon regions"
+              className="h-auto w-full max-w-[560px] object-contain drop-shadow-xl"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
 

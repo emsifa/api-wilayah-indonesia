@@ -12,6 +12,8 @@ const {
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
+const site = Astro.site ? String(Astro.site).replace(/\/$/, "") : "https://www.emsifa.com";
+const ogImageUrl = `${site}${base}og_image.jpg`;
 ---
 
 <!doctype html>
@@ -24,6 +26,16 @@ const base = import.meta.env.BASE_URL;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="API Statis Wilayah Indonesia v2 — peta polygon 38 provinsi, 514 kab/kota, 7285 kecamatan, 83762 kelurahan" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
