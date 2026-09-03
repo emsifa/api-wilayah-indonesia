@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Copy, Check, ExternalLink, Download } from "lucide-react";
 import { AccordionItem } from "../ui/Accordion";
 import { JsonHighlighter } from "../ui/JsonHighlighter";
+import { CodeHighlighter } from "../ui/CodeHighlighter";
 import { apiEndpoints, type SnippetLang } from "../api/apiSpec";
 
 const LANGS: { key: SnippetLang; label: string }[] = [
@@ -150,14 +151,7 @@ export function ApiSection() {
                   </div>
 
                   {/* Code block */}
-                  <pre className="overflow-x-auto rounded-xl bg-slate-950 p-4 text-xs leading-relaxed">
-                    <code
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                      className="text-slate-200 whitespace-pre"
-                    >
-                      {ep.snippets[activeLang]}
-                    </code>
-                  </pre>
+                  <CodeHighlighter code={ep.snippets[activeLang]} lang={activeLang} />
                 </div>
 
                 <div>

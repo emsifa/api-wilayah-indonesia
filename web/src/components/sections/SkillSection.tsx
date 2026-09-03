@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Copy, Check, Sparkles, ArrowRight } from "lucide-react";
+import { MarkdownHighlighter } from "../ui/CodeHighlighter";
 
 const skillPreview = `---
 name: wilayah-indonesia
@@ -159,9 +160,7 @@ export function SkillSection() {
               </button>
             </div>
             <div className="max-h-[560px] overflow-auto p-4">
-              <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-slate-300">
-                {skillPreview}
-              </pre>
+              <MarkdownHighlighter code={skillPreview} />
             </div>
           </div>
         </div>

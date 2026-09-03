@@ -1,0 +1,36 @@
+/* highlight.js light theme untuk JsonHighlighter theme="light" — mapping ke colors light di JsonHighlighter.tsx lama */
+.hljs-light {
+  color: rgb(51 65 85); /* slate-700 punct default */
+  background: transparent;
+}
+.hljs-light .hljs-attr {
+  color: rgb(3 105 161); /* sky-700 key */
+}
+.hljs-light .hljs-string {
+  color: rgb(4 120 87); /* emerald-700 */
+}
+.hljs-light .hljs-number {
+  color: rgb(180 83 9); /* amber-700 */
+}
+.hljs-light .hljs-literal {
+  color: rgb(126 34 206); /* purple-700 boolean */
+}
+.hljs-light .hljs-comment {
+  color: rgb(148 163 184); /* slate-400 italic */
+  font-style: italic;
+}
+.hljs-light .hljs-keyword { color: rgb(126 34 206); }
+.hljs-light .hljs-built_in,
+.hljs-light .hljs-type { color: rgb(2 132 199); }
+.hljs-light .hljs-title { color: rgb(2 132 199); }
+
+/* dark variant inside light file for JsonHighlighter theme="dark" reuse */
+.hljs-dark {
+  color: rgb(226 232 240);
+  background: transparent;
+}
+.hljs-dark .hljs-attr { color: rgb(125 211 252); } /* sky-300 */
+.hljs-dark .hljs-string { color: rgb(110 231 183); } /* emerald-300 */
+.hljs-dark .hljs-number { color: rgb(252 211 77); } /* amber-300 */
+.hljs-dark .hljs-literal { color: rgb(216 180 254); } /* purple-300 */
+.hljs-dark .hljs-comment { color: rgb(100 116 139); font-style: italic; }

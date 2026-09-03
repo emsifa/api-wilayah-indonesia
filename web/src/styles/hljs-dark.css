@@ -1,0 +1,114 @@
+/* highlight.js dark theme — dipetakan ke palette Tailwind lama (hl di CodeHighlighter.tsx) */
+.hljs {
+  color: rgb(226 232 240); /* slate-200 default */
+  background: transparent;
+}
+
+/* keyword — text-purple-400 */
+.hljs-keyword {
+  color: rgb(192 132 252);
+}
+
+/* string — text-emerald-300 */
+.hljs-string {
+  color: rgb(110 231 183);
+}
+
+/* number — text-amber-300 */
+.hljs-number {
+  color: rgb(252 211 77);
+}
+
+/* boolean/literal (true, false, null) — text-purple-300 */
+.hljs-literal {
+  color: rgb(216 180 254);
+}
+
+/* built_in / type (Go types, php built_in) — text-sky-300 */
+.hljs-built_in,
+.hljs-type {
+  color: rgb(125 211 252);
+}
+
+/* function / title — text-sky-300 */
+.hljs-title,
+.hljs-title\.function,
+.hljs-title\.function\.invoke,
+.hljs-title\.class {
+  color: rgb(125 211 252);
+}
+
+/* variable ($var php, hljs-variable) — text-slate-300 */
+.hljs-variable {
+  color: rgb(203 213 225);
+}
+
+/* comment — text-slate-500 italic */
+.hljs-comment {
+  color: rgb(100 116 139);
+  font-style: italic;
+}
+
+/* attr / property (.foo) — text-sky-300 */
+.hljs-attr,
+.hljs-property,
+.hljs-attribute {
+  color: rgb(125 211 252);
+}
+
+/* meta (php <?php) — slate-400 subtle */
+.hljs-meta {
+  color: rgb(148 163 184);
+}
+
+/* meta keyword inside */
+.hljs-meta .hljs-keyword,
+.hljs-meta .hljs-string {
+  color: inherit;
+}
+
+/* subst — slate-200 */
+.hljs-subst {
+  color: rgb(226 232 240);
+}
+
+/* section / header markdown — text-amber-400 font-bold */
+.hljs-section {
+  color: rgb(251 191 36);
+  font-weight: 700;
+}
+
+/* code markdown (`code` dan ```block) — text-emerald-300 */
+.hljs-code {
+  color: rgb(110 231 183);
+}
+
+/* bullet/list markdown — text-slate-300 */
+.hljs-bullet {
+  color: rgb(203 213 225);
+}
+
+/* link / url — text-sky-300 */
+.hljs-link {
+  color: rgb(125 211 252);
+}
+
+/* quote blockquote — slate-400 italic */
+.hljs-quote {
+  color: rgb(148 163 184);
+  font-style: italic;
+}
+
+/* addition/deletion not used but reset */
+.hljs-addition { color: rgb(110 231 183); }
+.hljs-deletion { color: rgb(252 165 165); }
+
+/* emphasis/strong for markdown */
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }
+
+/* punctuation — keep slate-300 */
+.hljs-punctuation { color: rgb(203 213 225); }
+
+/* params — inherit */
+.hljs-params { color: rgb(226 232 240); }
