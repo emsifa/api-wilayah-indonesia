@@ -139,7 +139,7 @@ final provinces = jsonDecode(res.body)["data"] as List;`,
   },
   {
     method: "GET",
-    path: "/provinces/{code}.json",
+    path: "/provinces/{province_id}.json",
     description:
       "Kepoin satu provinsi aja by kode — misal 32 = Jawa Barat (level 1)",
     curl: `curl ${BASE}/provinces/32.json`,
