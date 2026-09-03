@@ -69,6 +69,14 @@ jobs:
           grep -c '"has_path":true' api/provinces.json || true
           grep -c '"has_path":false' api/provinces.json || true
 
+      - name: Generate missings
+        run: |
+          go run ./tools generate-missings -v
+          echo "missings summary:"
+          cat api/missings.json | head -c 2000
+          echo ""
+          ls -lh api/missings.json
+
       - name: Assemble publish dir
         run: |
           mkdir -p deploy

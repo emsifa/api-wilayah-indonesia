@@ -620,4 +620,60 @@ final path = jsonDecode(res.body)["data"] as Map;`,
   }
 }`,
   },
+  {
+    method: "GET",
+    path: "/missings.json",
+    description:
+      "Cek yang belum lengkap — list wilayah dimana has_path==false OR has_latlng==false (flat + summary by_level)",
+    curl: `curl ${BASE}/missings.json`,
+    snippets: {
+      curl: `curl ${BASE}/missings.json`,
+      fetch: `const res = await fetch("${BASE}/missings.json");
+const { data, meta, summary } = await res.json();`,
+      axios: `const { data: { data, meta, summary } } = await axios.get(
+  "${BASE}/missings.json"
+);`,
+      laravel: `$response = Http::get("${BASE}/missings.json");
+$missings = $response->json("data");`,
+      go: `resp, err := http.Get("${BASE}/missings.json")
+if err != nil { /* handle */ }
+defer resp.Body.Close()
+var result map[string]any
+json.NewDecoder(resp.Body).Decode(&result)`,
+      python: `import requests
+
+r = requests.get("${BASE}/missings.json")
+missings = r.json()["data"]`,
+      php: `$ch = curl_init("${BASE}/missings.json");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$body = json_decode(curl_exec($ch), true);
+curl_close($ch);
+$missings = $body["data"];`,
+      dart: `final res = await http.get(Uri.parse("${BASE}/missings.json"));
+final missings = jsonDecode(res.body)["data"] as List;`,
+    },
+    response: `{
+  "data": [
+    { "id": "53.09.14.2011", "name": "Watu Pangan", "has_path": false, "has_latlng": false },
+    { "id": "32.73.01.1001", "name": "Sukarasa", "has_path": true, "has_latlng": true }
+    // ... hanya yang has_path==false OR has_latlng==false yang muncul
+  ],
+  "meta": {
+    "updated_at": "2026-09-03",
+    "level": 0
+  },
+  "summary": {
+    "total_missing": 360,
+    "total_missing_path": 320,
+    "total_missing_latlng": 40,
+    "total_missing_both": 12,
+    "by_level": {
+      "province": 0,
+      "regency": 0,
+      "district": 0,
+      "village": 360
+    }
+  }
+}`,
+  },
 ];

@@ -110,6 +110,15 @@
         "url": { "raw": "{{baseUrl}}/paths/32.json", "host": ["{{baseUrl}}"], "path": ["paths","32.json"] },
         "description": "Polygon provinsi/kab-kota (compact JSON, level count+1)"
       }
+    },
+    {
+      "name": "Missings — wilayah belum lengkap",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/missings.json", "host": ["{{baseUrl}}"], "path": ["missings.json"] },
+        "description": "List wilayah dimana has_path==false OR has_latlng==false (flat + summary by_level, has_path/has_latlng bool)"
+      }
     }
   ]
 }

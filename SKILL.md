@@ -90,6 +90,7 @@ For lists, you get a compact form to keep files small:
 | `/villages/{village_code}.json` | One village + `postal_code` + all parents + `has_path` |
 | `/postal-codes/{postal_code}.json` | All villages that use that postal code |
 | `/paths/{code}.json` | Boundary polygon for any level (fetch only if `has_path=true`) |
+| `/missings.json` | Wilayah dimana `has_path==false` OR `has_latlng==false` (flat `{id,name,has_path,has_latlng}` + `summary` by_level) |
 
 ### 2.4 Totals (stats)
 
@@ -119,6 +120,31 @@ For lists, you get a compact form to keep files small:
 ```
 
 - Polygons are available for all levels when `has_path=true` — check `has_path` on any `provinces/regencies/districts/villages` response before fetching `/paths/{id}.json`. Some have one ring (single island), others have many (e.g., Jakarta 2 rings, Aceh 28, Papua Barat 1455). Your map code should handle both: if the first element is a point `[lat,lng]` it's a single polygon, if it's an array of points it's already a list of rings — collect all rings that have more than 2 points.
+
+### 2.6 Missings (incomplete data)
+
+```json
+// GET /missings.json
+{
+  "data": [
+    { "id": "53.09.14.2011", "name": "Watu Pangan", "has_path": false, "has_latlng": false },
+    { "id": "32.73.01.1005", "name": "Sukajadi", "has_path": false, "has_latlng": true }
+  ],
+  "meta": { "updated_at": "2026-09-03", "level": 0 },
+  "summary": {
+    "total_missing": 360,
+    "total_missing_path": 320,
+    "total_missing_latlng": 40,
+    "total_missing_both": 12,
+    "by_level": { "province": 0, "regency": 0, "district": 0, "village": 360 }
+  }
+}
+```
+
+- `has_path`: true if `/paths/{id}.json` exists, else false.
+- `has_latlng`: true if `lat` and `lng` present and not `0`/`null`/`undefined`, else false.
+- List is flat across all levels; entry appears if `has_path==false OR has_latlng==false`.
+- `summary.by_level` counts per level (province=0 dots, regency=1, district=2, village=3).
 
 ## 3. Downloaded Files — What You Get
 
@@ -179,6 +205,7 @@ kode,kodepos
 - If the user wants to fetch: call the endpoints in Section 2 in order `provinces → regencies/{prov} → districts/{reg} → villages/{dist}`. Always use the real `kode` from the previous response, never guess. Check `has_path` before fetching `/paths/{id}.json`.
 - If the user wants to self-host: suggest `npx wilayah download --format <...>` and point to the columns above. Let the user choose the format that fits their database.
 - For maps, all levels have `lat/lng` and may have polygons when `has_path=true` — check the flag first.
+- To monitor coverage: fetch `/missings.json` — each entry `{id,name,has_path,has_latlng}` appears if `!has_path || !has_latlng`; use `summary` to see totals by level.
 
 ## References
 
