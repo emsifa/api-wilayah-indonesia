@@ -91,4 +91,4 @@ bun publish --cwd cli
 ## Source
 
 - Skill: `SKILL.md` at repo root
-- API: `https://www.emsifa.com/api-data-wilayah-v2/v2`
+- API: `https://www.emsifa.com/api-wilayah-indonesia/v2`

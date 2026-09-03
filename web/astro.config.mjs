@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.emsifa.com',
-  base: '/api-data-wilayah-v2/',
+  base: '/api-wilayah-indonesia/',
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

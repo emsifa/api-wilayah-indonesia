@@ -4,7 +4,7 @@ import { IndonesiaMap, type TileType } from "../playground/IndonesiaMap";
 import { RegionDropdowns } from "../playground/RegionDropdowns";
 import type { Region } from "../playground/types";
 
-const BASE = "https://www.emsifa.com/api-data-wilayah-v2/v2";
+const BASE = "https://www.emsifa.com/api-wilayah-indonesia/v2";
 
 type ApiPlace = {
   id: string;

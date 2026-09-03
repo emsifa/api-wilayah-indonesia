@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://www.emsifa.com/api-data-wilayah-v2/v2",
+      "value": "https://www.emsifa.com/api-wilayah-indonesia/v2",
       "type": "string"
     }
   ],

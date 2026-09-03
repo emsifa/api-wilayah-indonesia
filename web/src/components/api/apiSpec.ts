@@ -17,7 +17,7 @@ export type ApiEndpoint = {
   response: string;
 };
 
-const BASE = "https://www.emsifa.com/api-data-wilayah-v2/v2";
+const BASE = "https://www.emsifa.com/api-wilayah-indonesia/v2";
 
 // Response diambil dari output tools/generate_static_api.go (genResponse + genPlace / genShortItem)
 // Lihat api/*.json setelah go run ./tools generate-static-api

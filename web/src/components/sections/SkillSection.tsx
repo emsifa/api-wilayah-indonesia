@@ -102,7 +102,7 @@ export function SkillSection() {
                     — jadi.
                   </p>
                   <a
-                    href="https://github.com/emsifa/api-data-wilayah-v2"
+                    href="https://github.com/emsifa/api-wilayah-indonesia"
                     target="_blank"
                     rel="noreferrer"
                     className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:text-amber-800"

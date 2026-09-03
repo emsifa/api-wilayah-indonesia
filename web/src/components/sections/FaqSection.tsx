@@ -58,7 +58,7 @@ const faqs: Faq[] = [
     a: (
       <div className="space-y-2 text-sm leading-relaxed text-slate-600">
         <p>
-          Ya, gratis 100%. Lisensinya <span className="font-semibold text-slate-900">MIT</span> — baik repo ini (<code className="rounded bg-slate-100 px-1 py-0.5 font-mono text-xs">emsifa/api-data-wilayah-v2</code>) maupun 3 repo sumber data cahyadsn. Kamu bebas pakai untuk personal maupun komersial, tanpa API key, tanpa biaya.
+          Ya, gratis 100%. Lisensinya <span className="font-semibold text-slate-900">MIT</span> — baik repo ini (<code className="rounded bg-slate-100 px-1 py-0.5 font-mono text-xs">emsifa/api-wilayah-indonesia</code>) maupun 3 repo sumber data cahyadsn. Kamu bebas pakai untuk personal maupun komersial, tanpa API key, tanpa biaya.
         </p>
         <p className="text-xs text-slate-500">Cukup cantumkan atribusi ke sumber data jika kamu publish ulang — sudah cukup membantu.</p>
       </div>
@@ -133,7 +133,7 @@ npx wilayah download --format json --output ./wilayah.json
           </li>
           <li>
             Jika salah <span className="font-semibold text-slate-700">render API, has_path/has_latlng, atau missings</span> — buka issue di{" "}
-            <a href="https://github.com/emsifa/api-data-wilayah-v2/issues" target="_blank" rel="noreferrer" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-900">emsifa/api-data-wilayah-v2</a>.
+            <a href="https://github.com/emsifa/api-wilayah-indonesia/issues" target="_blank" rel="noreferrer" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-900">emsifa/api-wilayah-indonesia</a>.
           </li>
         </ul>
         <p className="text-xs text-slate-500">Biasanya fix di hulu akan kebawa otomatis di deploy mingguan berikutnya.</p>
@@ -187,7 +187,7 @@ export function FaqSection() {
     "Seberapa akurat lat/lng dan polygon?":
       "Lat/lng provinsi/kab-kota dari Google Maps, kecamatan/kelurahan centroid BIG, polygon multipolygon simplified 6 desimal. Cek has_path/has_latlng atau missings.json.",
     "Bagaimana kalau ada data yang salah?":
-      "Lapor ke cahyadsn/wilayah, wilayah_kodepos, wilayah_boundaries untuk kode/nama/kodepos/polygon, atau ke emsifa/api-data-wilayah-v2 untuk render API.",
+      "Lapor ke cahyadsn/wilayah, wilayah_kodepos, wilayah_boundaries untuk kode/nama/kodepos/polygon, atau ke emsifa/api-wilayah-indonesia untuk render API.",
   };
   const jsonLdFull = {
     "@context": "https://schema.org",
@@ -219,7 +219,7 @@ export function FaqSection() {
 
         <p className="mt-6 text-center text-xs text-slate-400">
           Masih ada yang bingung?{" "}
-          <a href="https://github.com/emsifa/api-data-wilayah-v2/issues" target="_blank" rel="noreferrer" className="font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
+          <a href="https://github.com/emsifa/api-wilayah-indonesia/issues" target="_blank" rel="noreferrer" className="font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
             Buka issue di GitHub
           </a>
           .

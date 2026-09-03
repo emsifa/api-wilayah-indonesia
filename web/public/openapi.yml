@@ -9,11 +9,11 @@ info:
   version: 2.0.0
   contact:
     name: emsifa
-    url: https://github.com/emsifa/api-data-wilayah-v2
+    url: https://github.com/emsifa/api-wilayah-indonesia
   license:
     name: MIT
 servers:
-  - url: https://www.emsifa.com/api-data-wilayah-v2/v2
+  - url: https://www.emsifa.com/api-wilayah-indonesia/v2
     description: Production (www.emsifa.com — custom domain GitHub Pages, CORS enabled)
 
 paths:

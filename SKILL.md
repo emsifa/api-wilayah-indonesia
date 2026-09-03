@@ -5,7 +5,7 @@ description: Schemas for Indonesian administrative data — API responses and do
 
 # SKILL — Wilayah Indonesia
 
-Use this skill when a developer wants to integrate Indonesian administrative data (provinces, regencies/cities, districts, villages, postal codes, boundaries) into their app. Data is available in two interchangeable ways: **Static API** (`https://www.emsifa.com/api-data-wilayah-v2/v2`) and **Downloaded files** (`npx wilayah download --format csv|sql|json`). This file only describes what you will receive — columns, keys, and response shapes — so you can build for any stack.
+Use this skill when a developer wants to integrate Indonesian administrative data (provinces, regencies/cities, districts, villages, postal codes, boundaries) into their app. Data is available in two interchangeable ways: **Static API** (`https://www.emsifa.com/api-wilayah-indonesia/v2`) and **Downloaded files** (`npx wilayah download --format csv|sql|json`). This file only describes what you will receive — columns, keys, and response shapes — so you can build for any stack.
 
 ## 1. Which Source Should You Use?
 
@@ -16,7 +16,7 @@ Ask the user: “Do you want to fetch from the API or self-host the data?”
 
 ## 2. API — What You Get
 
-Base URL: `https://www.emsifa.com/api-data-wilayah-v2/v2`
+Base URL: `https://www.emsifa.com/api-wilayah-indonesia/v2`
 
 Every response has the same wrapper:
 
@@ -214,6 +214,6 @@ kode,kodepos
 
 ## References
 
-- Live API: `https://www.emsifa.com/api-data-wilayah-v2/v2`
+- Live API: `https://www.emsifa.com/api-wilayah-indonesia/v2`
 - Spec: `openapi.yml` and `wilayah-postman.json` at the same base URL
 - Stats: `api/stats.json`, `api/provinces.json`

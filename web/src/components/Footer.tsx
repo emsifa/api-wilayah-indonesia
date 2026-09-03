@@ -93,7 +93,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/emsifa/api-data-wilayah-v2"
+                  href="https://github.com/emsifa/api-wilayah-indonesia"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 hover:text-white transition"
@@ -103,7 +103,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.emsifa.com/api-data-wilayah-v2/v2/stats.json"
+                  href="https://www.emsifa.com/api-wilayah-indonesia/v2/stats.json"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition"

@@ -26,7 +26,7 @@ export function ApiSection() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const baseUrl = "https://www.emsifa.com/api-data-wilayah-v2/v2";
+  const baseUrl = "https://www.emsifa.com/api-wilayah-indonesia/v2";
 
   return (
     <section
