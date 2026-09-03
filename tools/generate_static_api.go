@@ -101,6 +101,7 @@ type genShortItem struct {
 	ID         string `json:"id"`
 	Name       string `json:"name"`
 	PostalCode string `json:"postal_code,omitempty"`
+	HasPath    bool   `json:"has_path"`
 }
 
 type genPlace struct {
@@ -114,6 +115,7 @@ type genPlace struct {
 	Population int64   `json:"population,omitempty"`
 	TotalArea  float64 `json:"total_area,omitempty"`
 	PostalCode string  `json:"postal_code,omitempty"`
+	HasPath    bool    `json:"has_path"`
 
 	Province *genPlace `json:"province,omitempty"`
 	Regency  *genPlace `json:"regency,omitempty"`

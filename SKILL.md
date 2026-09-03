@@ -49,12 +49,14 @@ For `provinces.json`, `provinces/{code}.json`, `regencies/{province}.json`, `reg
   "tz": 7,
   "population": 51316378,
   "total_area": 37053.33,
+  "has_path": true,
   "province": { "id": "32", "name": "Jawa Barat" },
   "regency": { "id": "32.73", "name": "Kota Bandung" }
 }
 ```
 
-- You'll always get `id` and `name`. For provinces and regencies you also get `capital, lat, lng (for map marker), elv, tz, population, total_area`.
+- You'll always get `id`, `name`, and `has_path` (boolean, true if `/paths/{id}.json` exists). For provinces and regencies you also get `capital, lat, lng (for map marker), elv, tz, population, total_area`.
+- `has_path` is always present (true/false) — check it before fetching `/paths/{id}.json` to avoid 404.
 - Detail endpoints also include their parent: a regency includes `province`, a district includes `province` + `regency`, a village includes all three.
 
 ### 2.2 What you get for districts & villages (lists)
@@ -63,14 +65,15 @@ For lists, you get a compact form to keep files small:
 
 ```json
 // districts/{regency}.json
-{ "id": "32.73.01", "name": "Sukasari" }
+{ "id": "32.73.01", "name": "Sukasari", "lat": -6.87, "lng": 107.59, "has_path": true }
 
 // villages/{district}.json
-{ "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152" }
+{ "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152", "lat": -6.87, "lng": 107.59, "has_path": true }
 ```
 
-- District lists only have `id` and `name` (no coordinates or polygon here).
-- Village lists add `postal_code` so you can filter by postal code without a separate lookup.
+- District lists have `id`, `name`, `lat`, `lng`, and `has_path` (compact but with coordinates).
+- Village lists add `postal_code` + `has_path` so you can filter by postal code and know if polygon is available without a separate lookup.
+- Detail endpoints (`districts/{code}.json`, `villages/{code}.json`) also include `has_path` alongside `lat/lng` and parent objects.
 
 ### 2.3 All endpoints
 
@@ -81,12 +84,12 @@ For lists, you get a compact form to keep files small:
 | `/provinces/{code}.json` | One province, e.g. `32` |
 | `/regencies/{province_code}.json` | Regencies in that province |
 | `/regencies/{regency_code}.json` | One regency + its province |
-| `/districts/{regency_code}.json` | Districts in that regency (compact) |
-| `/districts/{district_code}.json` | One district + its province/regency |
-| `/villages/{district_code}.json` | Villages in that district + `postal_code` |
-| `/villages/{village_code}.json` | One village + `postal_code` + all parents |
+| `/districts/{regency_code}.json` | Districts in that regency (compact) + `has_path` |
+| `/districts/{district_code}.json` | One district + its province/regency + `has_path` |
+| `/villages/{district_code}.json` | Villages in that district + `postal_code` + `has_path` |
+| `/villages/{village_code}.json` | One village + `postal_code` + all parents + `has_path` |
 | `/postal-codes/{postal_code}.json` | All villages that use that postal code |
-| `/paths/{province_or_regency_code}.json` | Boundary polygon for a province/regency |
+| `/paths/{code}.json` | Boundary polygon for any level (fetch only if `has_path=true`) |
 
 ### 2.4 Totals (stats)
 
@@ -115,7 +118,7 @@ For lists, you get a compact form to keep files small:
 }
 ```
 
-- Only provinces and regencies have polygons. Some have one ring (single island), others have many (e.g., Jakarta 2 rings, Aceh 28, Papua Barat 1455). Your map code should handle both: if the first element is a point `[lat,lng]` it's a single polygon, if it's an array of points it's already a list of rings — collect all rings that have more than 2 points.
+- Polygons are available for all levels when `has_path=true` — check `has_path` on any `provinces/regencies/districts/villages` response before fetching `/paths/{id}.json`. Some have one ring (single island), others have many (e.g., Jakarta 2 rings, Aceh 28, Papua Barat 1455). Your map code should handle both: if the first element is a point `[lat,lng]` it's a single polygon, if it's an array of points it's already a list of rings — collect all rings that have more than 2 points.
 
 ## 3. Downloaded Files — What You Get
 
@@ -173,9 +176,9 @@ kode,kodepos
 
 ## 5. How to Use (for the AI)
 
-- If the user wants to fetch: call the endpoints in Section 2 in order `provinces → regencies/{prov} → districts/{reg} → villages/{dist}`. Always use the real `kode` from the previous response, never guess.
+- If the user wants to fetch: call the endpoints in Section 2 in order `provinces → regencies/{prov} → districts/{reg} → villages/{dist}`. Always use the real `kode` from the previous response, never guess. Check `has_path` before fetching `/paths/{id}.json`.
 - If the user wants to self-host: suggest `npx wilayah download --format <...>` and point to the columns above. Let the user choose the format that fits their database.
-- For maps, only provinces/regencies have coordinates and polygons — don’t try to zoom to a district/village by coordinates.
+- For maps, all levels have `lat/lng` and may have polygons when `has_path=true` — check the flag first.
 
 ## References
 

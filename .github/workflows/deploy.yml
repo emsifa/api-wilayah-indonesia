@@ -62,6 +62,13 @@ jobs:
           echo "api/paths files:"
           find api/paths -type f | wc -l
 
+      - name: Add has_path
+        run: |
+          go run ./tools add-has-path -v
+          echo "verify has_path:"
+          grep -c '"has_path":true' api/provinces.json || true
+          grep -c '"has_path":false' api/provinces.json || true
+
       - name: Assemble publish dir
         run: |
           mkdir -p deploy

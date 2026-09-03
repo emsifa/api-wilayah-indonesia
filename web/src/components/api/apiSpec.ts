@@ -114,7 +114,8 @@ final provinces = jsonDecode(res.body)["data"] as List;`,
       "elv": 11,
       "tz": 7,
       "population": 5623479,
-      "total_area": 56835.019
+      "total_area": 56835.019,
+      "has_path": true
     },
     {
       "id": "12",
@@ -125,7 +126,8 @@ final provinces = jsonDecode(res.body)["data"] as List;`,
       "elv": 32,
       "tz": 7,
       "population": 15640905,
-      "total_area": 72437.755
+      "total_area": 72437.755,
+      "has_path": true
     }
     // ... 36 more
   ],
@@ -177,7 +179,8 @@ final province = jsonDecode(res.body)["data"] as Map;`,
     "elv": 739,
     "tz": 7,
     "population": 51316378,
-    "total_area": 37053.331
+    "total_area": 37053.331,
+    "has_path": true
   },
   "meta": {
     "generated_at": "2026-09-02T03:35:49Z",
@@ -228,7 +231,8 @@ final regencies = jsonDecode(res.body)["data"] as List;`,
       "elv": 134,
       "tz": 7,
       "population": 5809790,
-      "total_area": 2991.778
+      "total_area": 2991.778,
+      "has_path": true
     },
     {
       "id": "32.02",
@@ -239,7 +243,8 @@ final regencies = jsonDecode(res.body)["data"] as List;`,
       "elv": 16,
       "tz": 7,
       "population": 2868943,
-      "total_area": 4163.824
+      "total_area": 4163.824,
+      "has_path": true
     }
     // ... 25 more (total 27 regencies in Jawa Barat)
   ],
@@ -292,6 +297,7 @@ final regency = jsonDecode(res.body)["data"] as Map;`,
     "tz": 7,
     "population": 2591763,
     "total_area": 166.593,
+    "has_path": true,
     "province": {
       "id": "32",
       "name": "Jawa Barat"
@@ -337,11 +343,11 @@ final districts = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01", "name": "Sukasari", "lat": -6.873456, "lng": 107.591234 },
-    { "id": "32.73.02", "name": "Coblong", "lat": -6.882345, "lng": 107.603456 },
-    { "id": "32.73.03", "name": "Babakan Ciparay", "lat": -6.891234, "lng": 107.585678 },
-    { "id": "32.73.04", "name": "Bojongloa Kaler", "lat": -6.901234, "lng": 107.578901 },
-    { "id": "32.73.05", "name": "Andir", "lat": -6.912345, "lng": 107.592345 }
+    { "id": "32.73.01", "name": "Sukasari", "lat": -6.873456, "lng": 107.591234, "has_path": true },
+    { "id": "32.73.02", "name": "Coblong", "lat": -6.882345, "lng": 107.603456, "has_path": true },
+    { "id": "32.73.03", "name": "Babakan Ciparay", "lat": -6.891234, "lng": 107.585678, "has_path": false },
+    { "id": "32.73.04", "name": "Bojongloa Kaler", "lat": -6.901234, "lng": 107.578901, "has_path": true },
+    { "id": "32.73.05", "name": "Andir", "lat": -6.912345, "lng": 107.592345, "has_path": true }
     // ... 25 more
   ],
   "meta": {
@@ -388,6 +394,7 @@ final district = jsonDecode(res.body)["data"] as Map;`,
     "name": "Sukasari",
     "lat": -6.873456,
     "lng": 107.591234,
+    "has_path": true,
     "province": {
       "id": "32",
       "name": "Jawa Barat"
@@ -437,10 +444,10 @@ final villages = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152", "lat": -6.873456, "lng": 107.591234 },
-    { "id": "32.73.01.1002", "name": "Gegerkalong", "postal_code": "40153", "lat": -6.882345, "lng": 107.603456 },
-    { "id": "32.73.01.1003", "name": "Isola", "postal_code": "40154", "lat": -6.891234, "lng": 107.585678 },
-    { "id": "32.73.01.1004", "name": "Sarijadi", "postal_code": "40151", "lat": -6.901234, "lng": 107.578901 }
+    { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152", "lat": -6.873456, "lng": 107.591234, "has_path": true },
+    { "id": "32.73.01.1002", "name": "Gegerkalong", "postal_code": "40153", "lat": -6.882345, "lng": 107.603456, "has_path": true },
+    { "id": "32.73.01.1003", "name": "Isola", "postal_code": "40154", "lat": -6.891234, "lng": 107.585678, "has_path": false },
+    { "id": "32.73.01.1004", "name": "Sarijadi", "postal_code": "40151", "lat": -6.901234, "lng": 107.578901, "has_path": true }
   ],
   "meta": {
     "updated_at": "2026-09-03",
@@ -487,6 +494,7 @@ final village = jsonDecode(res.body)["data"] as Map;`,
     "postal_code": "40152",
     "lat": -6.873456,
     "lng": 107.591234,
+    "has_path": true,
     "province": {
       "id": "32",
       "name": "Jawa Barat"

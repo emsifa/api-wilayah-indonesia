@@ -10,10 +10,12 @@ func printUsage() {
 	fmt.Fprintf(os.Stderr, "  go run ./tools extract-csv [-d dir_output] {path_file_sql | url}\n")
 	fmt.Fprintf(os.Stderr, "  go run ./tools generate-static-api [-data data] [-out api] [-v]\n")
 	fmt.Fprintf(os.Stderr, "  go run ./tools generate-boundaries [-data-boundaries data/boundaries] [-out api] [-prov 31] [-limit 0] [-skip-download] [-v]\n")
+	fmt.Fprintf(os.Stderr, "  go run ./tools add-has-path [-out api] [-paths api/paths] [-v]\n")
 	fmt.Fprintf(os.Stderr, "\nCommands:\n")
 	fmt.Fprintf(os.Stderr, "  extract-csv            extract INSERT statements from SQL dump into per-table CSV files (alias: extract-sql)\n")
 	fmt.Fprintf(os.Stderr, "  generate-static-api    pre-generate the static wilayah API from CSV/JSON data (alias: generate-api)\n")
 	fmt.Fprintf(os.Stderr, "  generate-boundaries    download, extract, convert boundaries SQL and update API endpoints\n")
+	fmt.Fprintf(os.Stderr, "  add-has-path           patch has_path into provinces/regencies/districts/villages JSON files (alias: add_has_path)\n")
 }
 
 func main() {
@@ -38,6 +40,11 @@ func main() {
 		}
 	case "generate-boundaries":
 		if err := runGenerateBoundaries(args); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+	case "add-has-path", "add_has_path":
+		if err := runAddHasPath(args); err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}

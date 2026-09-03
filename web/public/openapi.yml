@@ -44,7 +44,7 @@ paths:
   /provinces.json:
     get:
       summary: List provinsi
-      description: Daftar semua provinsi (level 1) dengan capital, lat, lng, elv, tz, population, total_area
+      description: Daftar semua provinsi (level 1) dengan capital, lat, lng, elv, tz, population, total_area, has_path
       operationId: listProvinces
       responses:
         "200":
@@ -111,7 +111,7 @@ paths:
   /districts/{regency_code}.json:
     get:
       summary: List kecamatan by kab/kota
-      description: Mengembalikan genShortItem[] (id, name)
+      description: Mengembalikan genShortItem[] (id, name, has_path, lat, lng)
       parameters:
         - name: regency_code
           in: path
@@ -146,7 +146,7 @@ paths:
   /villages/{district_code}.json:
     get:
       summary: List kelurahan by kecamatan
-      description: genShortItem[] dengan postal_code
+      description: genShortItem[] dengan postal_code, has_path, lat, lng
       parameters:
         - name: district_code
           in: path
@@ -197,8 +197,8 @@ paths:
 
   /paths/{code}.json:
     get:
-      summary: Polygon provinsi/kab-kota
-      description: Compact JSON { id, name, path: number[][] } — level = genLevelCount(code)+1
+      summary: Polygon provinsi/kab-kota/kec/kelurahan
+      description: "Compact JSON { id, name, path: number[][] } — level = genLevelCount(code)+1, tersedia jika has_path=true pada endpoint wilayah"
       parameters:
         - name: code
           in: path
@@ -224,7 +224,7 @@ components:
 
     Place:
       type: object
-      required: [id, name]
+      required: [id, name, has_path]
       properties:
         id: { type: string, example: "32.73.01.1001" }
         name: { type: string, example: "Sukarasa" }
@@ -236,17 +236,21 @@ components:
         population: { type: integer, example: 51316378 }
         total_area: { type: number, example: 37053.33 }
         postal_code: { type: string, example: "40152" }
+        has_path: { type: boolean, example: true, description: "true jika /paths/{id}.json tersedia" }
         province: { $ref: "#/components/schemas/ShortItem" }
         regency: { $ref: "#/components/schemas/ShortItem" }
         district: { $ref: "#/components/schemas/ShortItem" }
 
     ShortItem:
       type: object
-      required: [id, name]
+      required: [id, name, has_path]
       properties:
         id: { type: string, example: "32.73.01" }
         name: { type: string, example: "Sukasari" }
         postal_code: { type: string, example: "40152" }
+        has_path: { type: boolean, example: true, description: "true jika /paths/{id}.json tersedia" }
+        lat: { type: number, example: -6.90 }
+        lng: { type: number, example: 107.61 }
 
     PlacesResponse:
       type: object
