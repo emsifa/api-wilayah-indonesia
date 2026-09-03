@@ -35,9 +35,6 @@ export function Header() {
     <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
       <div className="pointer-events-auto flex w-full max-w-5xl items-center justify-between gap-4 rounded-full border border-slate-200/70 bg-white/90 px-3 py-2 shadow-xl shadow-slate-900/10 backdrop-blur-xl md:px-4">
         <a href="#" className="flex items-center gap-2.5 pl-1">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-extrabold tracking-tighter text-white">
-            W
-          </div>
           <span className="flex flex-col leading-none">
             <span className="text-sm font-bold tracking-tight text-slate-900">
               API Statis Wilayah Indonesia

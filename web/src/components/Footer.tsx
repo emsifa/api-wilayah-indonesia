@@ -1,4 +1,4 @@
-import { Github, ArrowUp } from "lucide-react";
+import { Github, ArrowUp, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 export function Footer() {
   return (
@@ -38,6 +38,53 @@ export function Footer() {
               <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-300">
                 83.762 Desa
               </span>
+            </div>
+            <div className="mt-4 flex items-center gap-2">
+              <a
+                href="https://facebook.com/em.sifa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white hover:text-slate-900"
+              >
+                <Facebook size={16} />
+              </a>
+              <a
+                href="https://instagram.com/em.sifa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white hover:text-slate-900"
+              >
+                <Instagram size={16} />
+              </a>
+              <a
+                href="https://twitter.com/emsifa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="X"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white hover:text-slate-900"
+              >
+                <Twitter size={16} />
+              </a>
+              <a
+                href="https://github.com/emsifa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white hover:text-slate-900"
+              >
+                <Github size={16} />
+              </a>
+              <a
+                href="https://youtube.com/@emsifa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="YouTube"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white hover:text-slate-900"
+              >
+                <Youtube size={16} />
+              </a>
             </div>
           </div>
 
@@ -110,10 +157,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs md:flex-row md:items-center">
-          <p>
-            © 2026 Data Wilayah Indonesia — MIT License. Built with Astro +
-            React + Tailwind.
-          </p>
+          <p>© 2026 Muhammad Syifa — MIT License. Built with Astro + React + Tailwind.</p>
           <a
             href="#"
             onClick={(e) => {

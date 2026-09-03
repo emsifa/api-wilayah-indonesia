@@ -7,55 +7,60 @@ const tabs = [
     id: "download",
     label: "download",
     icon: Download,
-    title: "npx wilayah download",
+    title: "npx @emsifa/wilayah download",
     desc: "Mau self-host? Tarik full datanya dan host sendiri — CSV buat Excel, SQL buat import DB, JSON buat di-serve statis kayak API ini.",
     code: `# CSV — buat diolah di spreadsheet
-npx wilayah download --format csv --output ./wilayah.csv
+npx @emsifa/wilayah download --format csv --output ./wilayah.csv
 
 # SQL — tinggal import ke DB self-host lo
-npx wilayah download --format sql --output ./wilayah.sql
+npx @emsifa/wilayah download --format sql --output ./wilayah.sql
 
 # JSON — serve statis di Nginx / Cloudflare / Vercel lo sendiri
-npx wilayah download --format json --output ./wilayah.json`,
+npx @emsifa/wilayah download --format json --output ./wilayah.json`,
+    comingSoon: true,
   },
   {
     id: "scaffold",
     label: "scaffold",
     icon: Layers,
-    title: "npx wilayah scaffold",
+    title: "npx @emsifa/wilayah scaffold",
     desc: "Biar self-host makin sat-set — generate schema & migration buat Laravel, Prisma, atau Drizzle, tinggal migrate.",
     code: `# Laravel (migration + seeder)
-npx wilayah scaffold --orm laravel
+npx @emsifa/wilayah scaffold --orm laravel
 
 # Prisma (schema.prisma + seed)
-npx wilayah scaffold --orm prisma
+npx @emsifa/wilayah scaffold --orm prisma
 
 # Drizzle (schema.ts + seed)
-npx wilayah scaffold --orm drizzle`,
+npx @emsifa/wilayah scaffold --orm drizzle`,
+    comingSoon: true,
   },
   {
     id: "skill",
     label: "skill",
     icon: Bot,
-    title: "npx wilayah skill",
-    desc: "Self-host AI juga? Kasih SKILL.md biar AI lo paham wilayah tanpa ngarang — buat Claude, Codex, OpenCode.",
-    code: `# Claude Code
-npx wilayah skill --agent claude
+    title: "npx @emsifa/wilayah skill",
+    desc: "Kamu vibe coder? install SKILL.md supaya AI agent kamu bisa bantu integrasikan data wilayah ke proyekmu — mendukung Claude, Codex, OpenCode, Antigravity, Kiro, dan lainnya.",
+    code: `# Interactive — select agents via checklist (multi-select)
+npx @emsifa/wilayah skill
 
-# Codex
-npx wilayah skill --agent codex
+# Non-interactive / CI
+npx @emsifa/wilayah skill --agent claude,antigravity --yes
 
-# OpenCode
-npx wilayah skill --agent opencode`,
+# Custom path (Others)
+npx @emsifa/wilayah skill --agent others --target ./.cursor/skills/wilayah-indonesia/SKILL.md --yes`,
+    comingSoon: false,
   },
 ] as const;
 
 export function CliSection() {
-  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("download");
+  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("skill");
   const [copied, setCopied] = useState(false);
   const current = tabs.find((t) => t.id === active)!;
+  const isSoon = Boolean((current as { comingSoon?: boolean }).comingSoon);
 
   const handleCopy = async () => {
+    if (isSoon) return;
     await navigator.clipboard.writeText(current.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -86,11 +91,12 @@ export function CliSection() {
           {tabs.map((t) => {
             const Icon = t.icon;
             const isActive = active === t.id;
+            const isTabSoon = Boolean((t as { comingSoon?: boolean }).comingSoon);
             return (
               <button
                 key={t.id}
                 onClick={() => setActive(t.id)}
-                className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition cursor-pointer ${
+                className={`relative inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition cursor-pointer ${
                   isActive
                     ? "bg-white text-slate-900 shadow"
                     : "text-slate-400 hover:bg-white/10 hover:text-white"
@@ -98,6 +104,11 @@ export function CliSection() {
               >
                 <Icon size={14} />
                 <span className="hidden sm:inline">{t.label}</span>
+                {isTabSoon && (
+                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-slate-900 shadow">
+                    soon
+                  </span>
+                )}
               </button>
             );
           })}
@@ -117,7 +128,13 @@ export function CliSection() {
             </span>
             <button
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white cursor-pointer"
+              disabled={isSoon}
+              aria-disabled={isSoon}
+              className={`inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium transition cursor-pointer ${
+                isSoon
+                  ? "cursor-not-allowed opacity-50 text-slate-500"
+                  : "text-slate-300 hover:bg-white/10 hover:text-white"
+              }`}
             >
               {copied ? (
                 <Check size={12} className="text-emerald-400" />
@@ -134,8 +151,17 @@ export function CliSection() {
               {current.desc}
             </p>
 
-            <div className="mt-4">
-              <CodeBlock code={current.code} lang="bash" />
+            <div className="relative mt-4">
+              <div className={isSoon ? "blur-[6px] select-none pointer-events-none opacity-60" : ""}>
+                <CodeBlock code={current.code} lang="bash" />
+              </div>
+              {isSoon && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-slate-950/40 backdrop-blur-[1px]">
+                  <span className="rounded-full border border-white/15 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-slate-900 shadow-lg">
+                    Soon
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -154,7 +180,7 @@ export function CliSection() {
         <p className="mt-6 text-center text-xs text-slate-500">
           Mau datanya auto-update di server lo? Tempel{" "}
           <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-slate-300">
-            npx wilayah download
+            npx @emsifa/wilayah download
           </code>{" "}
           di GitHub Actions / cron — tiap push auto tarik data terbaru buat
           self-host.
