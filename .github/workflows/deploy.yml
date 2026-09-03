@@ -77,6 +77,18 @@ jobs:
           echo ""
           ls -lh api/missings.json
 
+      - name: Update stats (endpoints & filesize)
+        run: |
+          go run ./tools update-stats -v
+          echo "stats.json:"
+          cat api/stats.json
+          echo "verify:"
+          jq .data.total_endpoints api/stats.json 2>/dev/null | xargs -I {} echo "  total_endpoints: {}"
+          jq .data.total_filesize_human api/stats.json 2>/dev/null | xargs -I {} echo "  total_filesize: {}"
+          jq .data.total_disk_usage_human api/stats.json 2>/dev/null | xargs -I {} echo "  total_disk_usage: {}"
+          echo "  du -sb (apparent): $(du -sb api | cut -f1) bytes"
+          echo "  du -sch (disk): $(du -sch api | tail -1)"
+
       - name: Assemble publish dir
         run: |
           mkdir -p deploy
