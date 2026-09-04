@@ -1,0 +1,115 @@
+name: deploy
+on:
+  schedule: [{ cron: "0 0 * * 0" }]
+  workflow_dispatch: {}
+  push:
+    branches: [master, v2]
+    paths: ["web/**", "tools/**", "go.mod", ".github/workflows/deploy.yml"]
+
+concurrency: { group: deploy, cancel-in-progress: false }
+permissions: { contents: write }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build Astro (web/)
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: true
+
+      - name: Extract CSV (ephemeral)
+        run: |
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah/refs/heads/master/db/wilayah.sql
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah/refs/heads/master/db/wilayah_level_1_2.sql
+          go run ./tools extract-csv https://raw.githubusercontent.com/cahyadsn/wilayah_kodepos/refs/heads/main/db/wilayah_kodepos.sql
+
+      - name: Generate API
+        run: |
+          go run ./tools generate-static-api -v
+          echo "api size:"
+          du -sh api
+          echo "api files:"
+          find api -type f | wc -l
+
+      - name: Cache boundaries zip
+        uses: actions/cache@v4
+        with:
+          path: .cache/wilayah_boundaries.zip
+          key: wilayah-boundaries-zip-v1
+
+      - name: Generate Boundaries
+        run: |
+          go run ./tools generate-boundaries -v
+          echo "api/paths size:"
+          du -sh api/paths
+          echo "api/paths files:"
+          find api/paths -type f | wc -l
+
+      - name: Add has_path
+        run: |
+          go run ./tools add-has-path -v
+          echo "verify has_path:"
+          grep -c '"has_path":true' api/provinces.json || true
+          grep -c '"has_path":false' api/provinces.json || true
+
+      - name: Generate missings
+        run: |
+          go run ./tools generate-missings -v
+          echo "missings summary:"
+          cat api/missings.json | head -c 2000
+          echo ""
+          ls -lh api/missings.json
+
+      - name: Update stats (endpoints & filesize)
+        run: |
+          go run ./tools update-stats -v
+          echo "stats.json:"
+          cat api/stats.json
+          echo "verify:"
+          jq .data.total_endpoints api/stats.json 2>/dev/null | xargs -I {} echo "  total_endpoints: {}"
+          jq .data.total_filesize_human api/stats.json 2>/dev/null | xargs -I {} echo "  total_filesize: {}"
+          jq .data.total_disk_usage_human api/stats.json 2>/dev/null | xargs -I {} echo "  total_disk_usage: {}"
+          echo "  du -sb (apparent): $(du -sb api | cut -f1) bytes"
+          echo "  du -sch (disk): $(du -sch api | tail -1)"
+
+      - name: Assemble publish dir
+        run: |
+          mkdir -p deploy
+          cp -r web/dist/* deploy/
+          touch deploy/.nojekyll
+          mkdir -p deploy/v2
+          cp -r api/* deploy/v2/
+          echo "deploy root:"
+          ls -lh deploy | head -30
+          echo "deploy/v2:"
+          ls -lh deploy/v2 | head -20
+          echo "deploy/v2 files:"
+          find deploy/v2 -type f | wc -l
+
+      - name: Deploy to gh-pages (keep old api/)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
+          publish_branch: gh-pages
+          keep_files: true
+          user_name: "github-actions[bot]"
+          user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_message: "deploy: ${{ github.sha }} [cron]"

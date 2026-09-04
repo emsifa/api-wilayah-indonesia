@@ -1,1 +1,9 @@
 node_modules/
+web/node_modules/
+web/dist/
+cli/dist/
+cli/assets/
+/api/
+/data/
+/deploy/
+.cache/

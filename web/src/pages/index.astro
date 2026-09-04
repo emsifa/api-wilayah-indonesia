@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
+import { PlaygroundSection } from "../components/sections/PlaygroundSection";
+import { ApiSection } from "../components/sections/ApiSection";
+import { CliSection } from "../components/sections/CliSection";
+import { SkillSection } from "../components/sections/SkillSection";
+import { FaqSection } from "../components/sections/FaqSection";
+---
+
+<Layout>
+  <Header client:load />
+  <main class="relative bg-slate-950">
+    <PlaygroundSection client:only="react" />
+    <ApiSection client:load />
+    <CliSection client:load />
+    <SkillSection client:load />
+    <FaqSection client:load />
+    <Footer client:load />
+  </main>
+</Layout>

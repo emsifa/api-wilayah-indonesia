@@ -1,0 +1,53 @@
+{
+  "name": "@emsifa/wilayah",
+  "version": "0.1.1",
+  "description": "CLI untuk data wilayah Indonesia — download, scaffold, skill",
+  "type": "module",
+  "bin": {
+    "wilayah": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emsifa/api-wilayah-indonesia.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "wilayah",
+    "indonesia",
+    "api",
+    "static-api",
+    "skill",
+    "cli"
+  ],
+  "homepage": "https://github.com/emsifa/api-wilayah-indonesia#readme",
+  "bugs": {
+    "url": "https://github.com/emsifa/api-wilayah-indonesia/issues"
+  },
+  "author": "Muhammad Syifa",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prebuild": "mkdir -p assets && cp ../SKILL.md ./assets/SKILL.md"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.10.1",
+    "citty": "^0.1.6",
+    "consola": "^3.4.2",
+    "pathe": "^2.0.3",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsdown": "^0.12.9",
+    "typescript": "^5.9.2"
+  }
+}

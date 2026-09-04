@@ -1,0 +1,57 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "API Statis Wilayah Indonesia — by emsifa",
+  description = "API Statis Wilayah Indonesia by emsifa — 38 Provinsi, 514 Kab/Kota, 7.285 Kecamatan, 83.762 Kelurahan. File JSON statis di www.emsifa.com — nggak perlu backend, tinggal fetch buat Laravel, Prisma, Drizzle & AI Agent.",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const site = Astro.site ? String(Astro.site).replace(/\/$/, "") : "https://www.emsifa.com";
+const ogImageUrl = `${site}${base}og_image.jpg`;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="API Statis Wilayah Indonesia v2 — peta polygon 38 provinsi, 514 kab/kota, 7285 kecamatan, 83762 kelurahan" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body class="bg-white text-slate-900 antialiased">
+    <slot />
+  </body>
+</html>

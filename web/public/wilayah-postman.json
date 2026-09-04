@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Wilayah Indonesia API",
+    "description": "Koleksi Postman untuk API statis data wilayah Indonesia — generate_static_api.go (38 provinsi, 514 kab/kota, 7285 kecamatan, 83762 kelurahan). Host di www.emsifa.com (custom domain GitHub Pages, CORS enabled) tanpa API key.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://www.emsifa.com/api-wilayah-indonesia/v2",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Stats — total wilayah",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/stats.json", "host": ["{{baseUrl}}"], "path": ["stats.json"] },
+        "description": "Total provinsi, kab/kota, kecamatan, kelurahan, kode pos, luas, populasi"
+      }
+    },
+    {
+      "name": "List Provinces",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/provinces.json", "host": ["{{baseUrl}}"], "path": ["provinces.json"] },
+        "description": "Daftar semua provinsi (level 1) dengan capital, lat,lng,elv,tz,population,total_area"
+      }
+    },
+    {
+      "name": "Detail Province",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/provinces/32.json", "host": ["{{baseUrl}}"], "path": ["provinces","32.json"] },
+        "description": "Detail provinsi 32 = Jawa Barat"
+      }
+    },
+    {
+      "name": "List Regencies by Province",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/regencies/32.json", "host": ["{{baseUrl}}"], "path": ["regencies","32.json"] },
+        "description": "Daftar kab/kota di provinsi 32"
+      }
+    },
+    {
+      "name": "Detail Regency",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/regencies/32.73.json", "host": ["{{baseUrl}}"], "path": ["regencies","32.73.json"] },
+        "description": "Detail Kota Bandung dengan parent province"
+      }
+    },
+    {
+      "name": "List Districts by Regency",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/districts/32.73.json", "host": ["{{baseUrl}}"], "path": ["districts","32.73.json"] },
+        "description": "Daftar kecamatan (genShortItem id,name)"
+      }
+    },
+    {
+      "name": "Detail District",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/districts/32.73.01.json", "host": ["{{baseUrl}}"], "path": ["districts","32.73.01.json"] },
+        "description": "Detail kecamatan Sukasari dengan parent province+regency"
+      }
+    },
+    {
+      "name": "List Villages by District",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/villages/32.73.01.json", "host": ["{{baseUrl}}"], "path": ["villages","32.73.01.json"] },
+        "description": "Daftar kelurahan dengan postal_code"
+      }
+    },
+    {
+      "name": "Detail Village",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/villages/32.73.01.1001.json", "host": ["{{baseUrl}}"], "path": ["villages","32.73.01.1001.json"] },
+        "description": "Detail kelurahan Sukarasa dengan parents"
+      }
+    },
+    {
+      "name": "By Postal Code",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/postal-codes/40152.json", "host": ["{{baseUrl}}"], "path": ["postal-codes","40152.json"] },
+        "description": "Cari kelurahan by kode pos"
+      }
+    },
+    {
+      "name": "Path Polygon",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/paths/32.json", "host": ["{{baseUrl}}"], "path": ["paths","32.json"] },
+        "description": "Polygon provinsi/kab-kota (compact JSON, level count+1)"
+      }
+    },
+    {
+      "name": "Missings — wilayah belum lengkap",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/missings.json", "host": ["{{baseUrl}}"], "path": ["missings.json"] },
+        "description": "List wilayah dimana has_path==false OR has_latlng==false (flat + summary by_level, has_path/has_latlng bool)"
+      }
+    }
+  ]
+}

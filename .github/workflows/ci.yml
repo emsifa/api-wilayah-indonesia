@@ -1,0 +1,20 @@
+name: ci
+on:
+  pull_request:
+    paths: ["web/**", "tools/**", "go.mod"]
+  push:
+    branches: [main, v2]
+    paths: ["web/**", "tools/**", "go.mod"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json }
+      - run: npm ci --prefix web
+      - run: npm run build --prefix web
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.25", cache: true }
+      - run: go vet ./...
