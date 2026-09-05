@@ -31,15 +31,20 @@ paths:
                 $ref: "#/components/schemas/StatsResponse"
               example:
                 data:
-                  total_area: 1889518.25
+                  total_area: 1889518.254
+                  total_disk_usage: 915771392
+                  total_disk_usage_human: "873.35 MB"
                   total_districts: 7285
-                  total_paths: 551
+                  total_endpoints: 201309
+                  total_filesize: 300423246
+                  total_filesize_human: "286.51 MB"
+                  total_paths: 91238
                   total_population: 284973643
                   total_postal_codes: 10632
                   total_provinces: 38
                   total_regencies: 514
                   total_villages: 83762
-                meta: { generated_at: "2026-09-02T03:35:49Z", level: 0 }
+                meta: { updated_at: "2026-09-04", level: 0 }
 
   /provinces.json:
     get:
@@ -227,18 +232,18 @@ paths:
                 $ref: "#/components/schemas/MissingsResponse"
               example:
                 data:
-                  - { id: "53.09.14.2011", name: "Watu Pangan", has_path: false, has_latlng: false }
-                  - { id: "32.73.01.1005", name: "Sukajadi", has_path: false, has_latlng: true }
-                meta: { updated_at: "2026-09-03", level: 0 }
-                summary: { total_missing: 360, total_missing_path: 320, total_missing_latlng: 40, total_missing_both: 12, by_level: { province: 0, regency: 0, district: 0, village: 360 } }
+                  - { id: "11.16.06.2021", name: "Alur Mentawak", has_path: false, has_latlng: false }
+                  - { id: "11.16.08.2017", name: "Mekar Jaya", has_path: false, has_latlng: false }
+                meta: { updated_at: "2026-09-04", level: 0 }
+                summary: { total_missing: 361, total_missing_path: 361, total_missing_latlng: 359, total_missing_both: 359, by_level: { province: 0, regency: 1, district: 0, village: 360 } }
 
 components:
   schemas:
     Meta:
       type: object
-      required: [generated_at, level]
+      required: [updated_at, level]
       properties:
-        generated_at: { type: string, format: date-time, example: "2026-09-02T03:35:49Z" }
+        updated_at: { type: string, format: date, example: "2026-09-04" }
         level: { type: integer, example: 1, description: "0=stats, 1=prov, 2=reg, 3=dist, 4=vill/postal" }
 
     Place:
@@ -303,9 +308,14 @@ components:
         data:
           type: object
           properties:
-            total_area: { type: number, example: 1889518.25 }
+            total_area: { type: number, example: 1889518.254 }
+            total_disk_usage: { type: integer, example: 915771392 }
+            total_disk_usage_human: { type: string, example: "873.35 MB" }
             total_districts: { type: integer, example: 7285 }
-            total_paths: { type: integer, example: 551 }
+            total_endpoints: { type: integer, example: 201309 }
+            total_filesize: { type: integer, example: 300423246 }
+            total_filesize_human: { type: string, example: "286.51 MB" }
+            total_paths: { type: integer, example: 91238 }
             total_population: { type: integer, example: 284973643 }
             total_postal_codes: { type: integer, example: 10632 }
             total_provinces: { type: integer, example: 38 }
@@ -353,14 +363,14 @@ components:
           type: object
           required: [total_missing, total_missing_path, total_missing_latlng, total_missing_both, by_level]
           properties:
-            total_missing: { type: integer, example: 360 }
-            total_missing_path: { type: integer, example: 320 }
-            total_missing_latlng: { type: integer, example: 40 }
-            total_missing_both: { type: integer, example: 12 }
+            total_missing: { type: integer, example: 361 }
+            total_missing_path: { type: integer, example: 361 }
+            total_missing_latlng: { type: integer, example: 359 }
+            total_missing_both: { type: integer, example: 359 }
             by_level:
               type: object
               properties:
                 province: { type: integer, example: 0 }
-                regency: { type: integer, example: 0 }
+                regency: { type: integer, example: 1 }
                 district: { type: integer, example: 0 }
                 village: { type: integer, example: 360 }
