@@ -1,4 +1,11 @@
-import { Github, ArrowUp, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import {
+  Github,
+  ArrowUp,
+  Facebook,
+  Instagram,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 
 export function Footer() {
   return (
@@ -23,10 +30,10 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-              Data wilayah paling lengkap se-Indonesia — 38 Provinsi, 514
-              Kab/Kota, 7.285 Kecamatan, 83.762 Kelurahan. Gratis, open source,
-              nggak perlu backend. Colok aja ke Laravel, Prisma, Drizzle, atau
-              AI Agent kamu.
+              API statis data wilayah Indonesia — 38 Provinsi, 514 Kab/Kota,
+              7.285 Kecamatan, 83.762 Kelurahan. Gratis, open source, nggak
+              perlu backend. Colok aja ke Laravel, Prisma, Drizzle, atau AI
+              Agent kamu.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-300">
@@ -157,7 +164,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs md:flex-row md:items-center">
-          <p>© 2026 Muhammad Syifa — MIT License. Built with Astro + React + Tailwind.</p>
+          <p>
+            © 2026 Muhammad Syifa — MIT License. Built with Astro + React +
+            Tailwind.
+          </p>
           <a
             href="#"
             onClick={(e) => {
