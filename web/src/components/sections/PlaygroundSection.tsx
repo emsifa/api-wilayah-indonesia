@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { MapPin, Search, RotateCcw, ChevronRight, Map, Satellite } from "lucide-react";
 import { IndonesiaMap, type TileType } from "../playground/IndonesiaMap";
-import { RegionDropdowns } from "../playground/RegionDropdowns";
+import { DesktopDropdowns, MobileStackCarousel } from "../playground/RegionDropdowns";
 import type { Region } from "../playground/types";
 
 const BASE = "https://www.emsifa.com/api-wilayah-indonesia/v2";
@@ -382,65 +382,102 @@ export function PlaygroundSection() {
         {/* Spacer — tidak menghalangi map */}
         <div className="flex-1" />
 
-        {/* Bottom dropdown box — full width inside max-w-5xl */}
-        <div className="pointer-events-auto mx-auto w-full max-w-5xl">
-          <div className="relative rounded-[20px] border border-white/20 bg-white p-4 shadow-2xl md:p-5">
-            <button
-              onClick={handleReset}
-              aria-label="Reset pilihan"
-              title="Reset"
-              disabled={!hasSelection}
-              className="absolute -top-3 -right-3 inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-md transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-            >
-              <RotateCcw size={12} />
-            </button>
-            <div className="mb-3 flex items-center gap-2 pr-6">
-              <Search size={14} className="text-slate-400" />
-              <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">
-                Cobain dulu — pilih wilayah
-              </span>
-            </div>
-            <RegionDropdowns
-              provinces={provinces}
-              regencies={regencies}
-              districts={districts}
-              villages={villages}
-              provCode={provCode}
-              regCode={regCode}
-              distCode={distCode}
-              villCode={villCode}
-              onProv={handleProv}
-              onReg={handleReg}
-              onDist={handleDist}
-              onVill={setVillCode}
-            />
-            {(() => {
-              const dataUrl = !provCode
-                ? `${BASE}/provinces.json`
-                : !regCode
-                  ? `${BASE}/regencies/${provCode}.json`
-                  : !distCode
-                    ? `${BASE}/districts/${regCode}.json`
-                    : `${BASE}/villages/${distCode}.json`;
-              return (
-                <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-slate-500">Request:</span>
+        {/* Bottom — 2 tampilan terpisah desktop vs mobile */}
+        {(() => {
+          const dataUrl = !provCode
+            ? `${BASE}/provinces.json`
+            : !regCode
+              ? `${BASE}/regencies/${provCode}.json`
+              : !distCode
+                ? `${BASE}/districts/${regCode}.json`
+                : `${BASE}/villages/${distCode}.json`;
+          return (
+            <div className="pointer-events-auto mx-auto w-full max-w-5xl">
+              {/* Desktop — tetap seperti sebelumnya */}
+              <div className="hidden md:block">
+                <div className="relative rounded-[20px] border border-white/20 bg-white p-4 shadow-2xl md:p-5">
+                  <button
+                    onClick={handleReset}
+                    aria-label="Reset pilihan"
+                    title="Reset"
+                    disabled={!hasSelection}
+                    className="absolute -top-3 -right-3 inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-md transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                  >
+                    <RotateCcw size={12} />
+                  </button>
+                  <div className="mb-3 flex items-center gap-2 pr-6">
+                    <Search size={14} className="text-slate-400" />
+                    <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">
+                      Cobain dulu — pilih wilayah
+                    </span>
+                  </div>
+                  <DesktopDropdowns
+                    provinces={provinces}
+                    regencies={regencies}
+                    districts={districts}
+                    villages={villages}
+                    provCode={provCode}
+                    regCode={regCode}
+                    distCode={distCode}
+                    villCode={villCode}
+                    onProv={handleProv}
+                    onReg={handleReg}
+                    onDist={handleDist}
+                    onVill={setVillCode}
+                  />
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-slate-500">Request:</span>
+                    <a
+                      href={dataUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-700 underline decoration-slate-300 underline-offset-2 transition hover:bg-slate-200 hover:text-slate-900"
+                    >
+                      GET {dataUrl}
+                    </a>
+                    {fetchMs !== null && (
+                      <span className="text-[11px] tabular-nums text-emerald-600">· {fetchMs} ms</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile — langsung stacked card carousel, tanpa wrapper/header, tanpa tombol reset, pill truncate, ms di pojok kanan (flow) */}
+              <div className="block md:hidden">
+                <MobileStackCarousel
+                  provinces={provinces}
+                  regencies={regencies}
+                  districts={districts}
+                  villages={villages}
+                  provCode={provCode}
+                  regCode={regCode}
+                  distCode={distCode}
+                  villCode={villCode}
+                  onProv={handleProv}
+                  onReg={handleReg}
+                  onDist={handleDist}
+                  onVill={setVillCode}
+                />
+                <div className="mt-2 flex items-center justify-between gap-2">
                   <a
                     href={dataUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-700 underline decoration-slate-300 underline-offset-2 transition hover:bg-slate-200 hover:text-slate-900"
+                    className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap rounded-full bg-white/95 px-3 py-1 font-mono text-[11px] text-slate-700 shadow backdrop-blur transition hover:bg-white [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                    title={dataUrl}
                   >
-                    GET {dataUrl}
+                    {dataUrl}
                   </a>
                   {fetchMs !== null && (
-                    <span className="text-[11px] tabular-nums text-emerald-600">· {fetchMs} ms</span>
+                    <span className="shrink-0 rounded-full bg-slate-900 px-2 py-0.5 text-[11px] font-medium tabular-nums text-white shadow">
+                      {fetchMs} ms
+                    </span>
                   )}
                 </div>
-              );
-            })()}
-          </div>
-        </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </section>
   );
