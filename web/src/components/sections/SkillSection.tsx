@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Copy, Check, Sparkles, ArrowRight, MessageCircle, Bot } from "lucide-react";
+import {
+  Copy,
+  Check,
+  Sparkles,
+  ArrowRight,
+  MessageCircle,
+  Bot,
+} from "lucide-react";
 
 export function SkillSection() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -58,9 +65,7 @@ export function SkillSection() {
                       1. Paling gampang — lewat CLI
                     </span>
                     <button
-                      onClick={() =>
-                        copy("npx @emsifa/wilayah skill --agent claude", "cli")
-                      }
+                      onClick={() => copy("npx @emsifa/wilayah skill", "cli")}
                       className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium hover:bg-white cursor-pointer"
                     >
                       {copied === "cli" ? (
@@ -72,13 +77,11 @@ export function SkillSection() {
                     </button>
                   </div>
                   <pre className="mt-2 overflow-x-auto rounded-xl bg-slate-950 p-3 font-mono text-xs text-slate-200">
-                    npx @emsifa/wilayah skill --agent claude
+                    npx @emsifa/wilayah skill
                   </pre>
-                  <p className="mt-2 text-xs text-slate-500">
-                    Beres, auto kecopy ke{" "}
-                    <code className="rounded bg-slate-100 px-1 py-0.5 font-mono">
-                      .claude/skills/wilayah/SKILL.md
-                    </code>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-500">
+                    Pilih agent yang kamu gunakan — file SKILL.md bakal kecopy
+                    ke folder skills yang sesuai.
                   </p>
                 </div>
 
