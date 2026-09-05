@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Github, ExternalLink, Star, GitFork } from "lucide-react";
 
 const links = [
-  { label: "Playground", href: "#playground" },
+  { label: "Playground", href: "#" },
   { label: "API", href: "#api" },
   { label: "CLI", href: "#cli" },
   { label: "SKILL", href: "#skill" },
@@ -39,7 +39,9 @@ export function Header() {
             <span className="text-sm font-bold tracking-tight text-slate-900">
               API Statis Wilayah Indonesia
             </span>
-            <span className="text-[11px] font-medium tracking-wide text-slate-500">by emsifa</span>
+            <span className="text-[11px] font-medium tracking-wide text-slate-500">
+              by emsifa
+            </span>
           </span>
           <span className="hidden rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold tracking-widest text-emerald-700 uppercase md:inline-flex">
             v2
@@ -124,7 +126,8 @@ export function Header() {
               <Github size={16} />
               {stars !== null && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-xs font-bold text-amber-300">
-                  <Star size={12} className="fill-amber-300" /> {formatCount(stars)}
+                  <Star size={12} className="fill-amber-300" />{" "}
+                  {formatCount(stars)}
                 </span>
               )}
               {forks !== null && (
