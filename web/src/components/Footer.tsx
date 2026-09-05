@@ -30,10 +30,11 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-              API statis data wilayah Indonesia — 38 Provinsi, 514 Kab/Kota,
-              7.285 Kecamatan, 83.762 Kelurahan. Gratis, open source, nggak
-              perlu backend. Colok aja ke Laravel, Prisma, Drizzle, atau AI
-              Agent kamu.
+              Kumpulan file JSON data wilayah Indonesia untuk diintegrasikan ke
+              aplikasimu tanpa ribet — 38 Provinsi, 514 Kab/Kota, 7.285
+              Kecamatan, 83.762 Kelurahan. Gratis, open source, nggak perlu
+              backend. Colok aja ke Laravel, Prisma, Drizzle, atau AI Agent
+              kamu.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-300">
