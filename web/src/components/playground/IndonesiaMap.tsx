@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap, ZoomControl } from "react-leaflet";
 import type { Region } from "./types";
 import L from "leaflet";
 
@@ -64,6 +64,18 @@ function FitPolygon({ positions }: { positions: [number, number][][] | null }) {
 
 export type TileType = "osm" | "esri";
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = () => setIsMobile(mql.matches);
+    handler();
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 export function IndonesiaMap({
   selected,
   zoom,
@@ -75,14 +87,17 @@ export function IndonesiaMap({
   polygon?: [number, number][][] | null;
   tile?: TileType;
 }) {
+  const isMobile = useIsMobile();
   return (
     <MapContainer
       center={[-2.5, 118.0]}
       zoom={5}
       scrollWheelZoom={false}
+      zoomControl={false}
       className="h-full w-full"
       style={{ background: "#e2e8f0" }}
     >
+      {!isMobile && <ZoomControl position="topleft" />}
       {tile === "esri" ? (
         <TileLayer
           attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
