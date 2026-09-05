@@ -56,9 +56,14 @@ final data = jsonDecode(res.body)["data"];`,
     },
     response: `{
   "data": {
-    "total_area": 1889518.2539999997,
+    "total_area": 1889518.254,
+    "total_disk_usage": 915771392,
+    "total_disk_usage_human": "873.35 MB",
     "total_districts": 7285,
-    "total_paths": 551,
+    "total_endpoints": 201309,
+    "total_filesize": 300423246,
+    "total_filesize_human": "286.51 MB",
+    "total_paths": 91238,
     "total_population": 284973643,
     "total_postal_codes": 10632,
     "total_provinces": 38,
@@ -66,8 +71,8 @@ final data = jsonDecode(res.body)["data"];`,
     "total_villages": 83762
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
-    "level": 0
+    "level": 0,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -118,22 +123,21 @@ final provinces = jsonDecode(res.body)["data"] as List;`,
       "has_path": true
     },
     {
-      "id": "12",
-      "name": "Sumatera Utara",
-      "capital": "Medan",
-      "lat": 3.5806304901245087,
-      "lng": 98.67199998443536,
-      "elv": 32,
+      "id": "31",
+      "name": "Daerah Khusus Ibukota Jakarta",
+      "capital": "Jakarta",
+      "lat": -6.177801577599116,
+      "lng": 106.82844443327093,
+      "elv": -4,
       "tz": 7,
-      "population": 15640905,
-      "total_area": 72437.755,
+      "population": 11038216,
       "has_path": true
     }
-    // ... 36 more
+    // ... 36 more (total 38)
   ],
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
-    "level": 1
+    "level": 1,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -183,8 +187,8 @@ final province = jsonDecode(res.body)["data"] as Map;`,
     "has_path": true
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
-    "level": 1
+    "level": 1,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -249,8 +253,8 @@ final regencies = jsonDecode(res.body)["data"] as List;`,
     // ... 25 more (total 27 regencies in Jawa Barat)
   ],
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
-    "level": 2
+    "level": 2,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -300,12 +304,13 @@ final regency = jsonDecode(res.body)["data"] as Map;`,
     "has_path": true,
     "province": {
       "id": "32",
-      "name": "Jawa Barat"
+      "name": "Jawa Barat",
+      "has_path": true
     }
   },
   "meta": {
-    "generated_at": "2026-09-02T03:35:49Z",
-    "level": 2
+    "level": 2,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -343,16 +348,13 @@ final districts = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01", "name": "Sukasari", "lat": -6.873456, "lng": 107.591234, "has_path": true },
-    { "id": "32.73.02", "name": "Coblong", "lat": -6.882345, "lng": 107.603456, "has_path": true },
-    { "id": "32.73.03", "name": "Babakan Ciparay", "lat": -6.891234, "lng": 107.585678, "has_path": false },
-    { "id": "32.73.04", "name": "Bojongloa Kaler", "lat": -6.901234, "lng": 107.578901, "has_path": true },
-    { "id": "32.73.05", "name": "Andir", "lat": -6.912345, "lng": 107.592345, "has_path": true }
-    // ... 25 more
+    { "id": "32.73.01", "name": "Sukasari", "lat": -6.866710075709871, "lng": 107.58716604539175, "has_path": true },
+    { "id": "32.73.02", "name": "Coblong", "lat": -6.884883447472015, "lng": 107.61538017670745, "has_path": true }
+    // ... 28 more
   ],
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 3
+    "level": 3,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -392,21 +394,23 @@ final district = jsonDecode(res.body)["data"] as Map;`,
   "data": {
     "id": "32.73.01",
     "name": "Sukasari",
-    "lat": -6.873456,
-    "lng": 107.591234,
+    "lat": -6.866710075709871,
+    "lng": 107.58716604539175,
     "has_path": true,
     "province": {
       "id": "32",
-      "name": "Jawa Barat"
+      "name": "Jawa Barat",
+      "has_path": true
     },
     "regency": {
       "id": "32.73",
-      "name": "Kota Bandung"
+      "name": "Kota Bandung",
+      "has_path": true
     }
   },
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 3
+    "level": 3,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -444,14 +448,27 @@ final villages = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "32.73.01.1001", "name": "Sukarasa", "postal_code": "40152", "lat": -6.873456, "lng": 107.591234, "has_path": true },
-    { "id": "32.73.01.1002", "name": "Gegerkalong", "postal_code": "40153", "lat": -6.882345, "lng": 107.603456, "has_path": true },
-    { "id": "32.73.01.1003", "name": "Isola", "postal_code": "40154", "lat": -6.891234, "lng": 107.585678, "has_path": false },
-    { "id": "32.73.01.1004", "name": "Sarijadi", "postal_code": "40151", "lat": -6.901234, "lng": 107.578901, "has_path": true }
+    {
+      "id": "32.73.01.1001",
+      "name": "Sukarasa",
+      "postal_code": "40152",
+      "lat": -6.874227470295148,
+      "lng": 107.58539617161965,
+      "has_path": true
+    },
+    {
+      "id": "32.73.01.1002",
+      "name": "Gegerkalong",
+      "postal_code": "40153",
+      "lat": -6.869350446627759,
+      "lng": 107.58886500774767,
+      "has_path": true
+    }
+    // ... 2 more
   ],
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 4
+    "level": 4,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -492,25 +509,28 @@ final village = jsonDecode(res.body)["data"] as Map;`,
     "id": "32.73.01.1001",
     "name": "Sukarasa",
     "postal_code": "40152",
-    "lat": -6.873456,
-    "lng": 107.591234,
+    "lat": -6.874227470295148,
+    "lng": 107.58539617161965,
     "has_path": true,
     "province": {
       "id": "32",
-      "name": "Jawa Barat"
+      "name": "Jawa Barat",
+      "has_path": true
     },
     "regency": {
       "id": "32.73",
-      "name": "Kota Bandung"
+      "name": "Kota Bandung",
+      "has_path": true
     },
     "district": {
       "id": "32.73.01",
-      "name": "Sukasari"
+      "name": "Sukasari",
+      "has_path": true
     }
   },
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 4
+    "level": 4,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -552,23 +572,27 @@ final villages = jsonDecode(res.body)["data"] as List;`,
       "id": "32.73.01.1001",
       "name": "Sukarasa",
       "postal_code": "40152",
+      "has_path": true,
       "province": {
         "id": "32",
-        "name": "Jawa Barat"
+        "name": "Jawa Barat",
+        "has_path": true
       },
       "regency": {
         "id": "32.73",
-        "name": "Kota Bandung"
+        "name": "Kota Bandung",
+        "has_path": true
       },
       "district": {
         "id": "32.73.01",
-        "name": "Sukasari"
+        "name": "Sukasari",
+        "has_path": true
       }
     }
   ],
   "meta": {
-    "generated_at": "2026-09-02T03:35:48Z",
-    "level": 4
+    "level": 4,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -609,14 +633,13 @@ final path = jsonDecode(res.body)["data"] as Map;`,
     "id": "32",
     "path": [
       [-6.980237, 106.395627],
-      [-6.934294, 106.390694],
-      [-6.921623, 106.399689]
+      [-6.934294, 106.390694]
       // ... ~240 more points (compact, no indent)
     ]
   },
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 1
+    "level": 1,
+    "updated_at": "2026-09-04"
   }
 }`,
   },
@@ -654,22 +677,22 @@ final missings = jsonDecode(res.body)["data"] as List;`,
     },
     response: `{
   "data": [
-    { "id": "53.09.14.2011", "name": "Watu Pangan", "has_path": false, "has_latlng": false },
-    { "id": "32.73.01.1001", "name": "Sukarasa", "has_path": true, "has_latlng": true }
+    { "id": "11.16.06.2021", "name": "Alur Mentawak", "has_path": false, "has_latlng": false },
+    { "id": "11.16.08.2017", "name": "Mekar Jaya", "has_path": false, "has_latlng": false }
     // ... hanya yang has_path==false OR has_latlng==false yang muncul
   ],
   "meta": {
-    "updated_at": "2026-09-03",
-    "level": 0
+    "level": 0,
+    "updated_at": "2026-09-04"
   },
   "summary": {
-    "total_missing": 360,
-    "total_missing_path": 320,
-    "total_missing_latlng": 40,
-    "total_missing_both": 12,
+    "total_missing": 361,
+    "total_missing_path": 361,
+    "total_missing_latlng": 359,
+    "total_missing_both": 359,
     "by_level": {
       "province": 0,
-      "regency": 0,
+      "regency": 1,
       "district": 0,
       "village": 360
     }
