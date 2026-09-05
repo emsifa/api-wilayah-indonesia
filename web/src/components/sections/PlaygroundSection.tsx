@@ -338,7 +338,7 @@ export function PlaygroundSection() {
       <div className="pointer-events-none relative z-10 flex h-full flex-col justify-between px-6 pt-24 pb-6 md:px-8 md:pt-24 md:pb-8">
         {/* Top — breadcrumb + tile toggle */}
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <div className="pointer-events-auto inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-white/95 px-4 py-2 text-xs font-medium text-slate-700 shadow-lg backdrop-blur md:text-sm">
+          <div className="pointer-events-auto hidden max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-white/95 px-4 py-2 text-xs font-medium text-slate-700 shadow-lg backdrop-blur md:inline-flex md:text-sm">
             <MapPin size={14} className="shrink-0 text-emerald-600" />
             {breadcrumbParts.length > 0 ? (
               <span className="inline-flex max-w-full items-center truncate">
