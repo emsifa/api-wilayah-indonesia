@@ -20,6 +20,7 @@
     "highlight.js": "^11.12.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.511.0",
+    "maplibre-gl": "^5.24.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-leaflet": "^5.0.0",
