@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { MapPin, Search, RotateCcw, ChevronRight, Map, Satellite } from "lucide-react";
-import { IndonesiaMap, type TileType } from "../playground/IndonesiaMap";
+import { MapLibreIndonesiaMap, type TileType } from "../playground/MapLibreIndonesiaMap";
 import { DesktopDropdowns, MobileStackCarousel } from "../playground/RegionDropdowns";
 import type { Region } from "../playground/types";
+import { normalizeRings } from "../playground/mapUtils";
 
 const BASE = "https://www.emsifa.com/api-wilayah-indonesia/v2";
 
@@ -237,25 +238,7 @@ export function PlaygroundSection() {
       .then((json) => {
         if (cancelled) return;
           const raw: unknown = json.data?.path;
-          // Normalisasi multi-depth: Papua Barat 92 = 1455 x [[[lat,lng]]] depth 4,
-          // Jakarta 31 = [[[lat,lng]], [[lat,lng]]] depth 3, single = [[lat,lng]] depth 2
-          const rings: [number, number][][] = [];
-          const collect = (node: unknown) => {
-            if (!Array.isArray(node) || (node as unknown[]).length === 0) return;
-            const arr = node as unknown[];
-            // Jika arr[0] adalah [number, number] → ini ring
-            if (
-              Array.isArray(arr[0]) &&
-              typeof (arr[0] as unknown[])[0] === "number" &&
-              typeof (arr[0] as unknown[])[1] === "number"
-            ) {
-              rings.push(arr as [number, number][]);
-              return;
-            }
-            for (const child of arr) collect(child);
-          };
-          collect(raw);
-          const valid = rings.filter((ring) => ring.length > 2);
+          const valid = normalizeRings(raw);
           setPolygon(valid.length > 0 ? valid : null);
       })
       .catch(() => {
@@ -329,9 +312,9 @@ export function PlaygroundSection() {
       id="playground"
       className="sticky top-0 z-0 flex h-[100svh] min-h-[640px] flex-col overflow-hidden bg-slate-950"
     >
-      {/* Full-size map — tanpa overlay gelap/terang, playground full bleed */}
+      {/* Full-size map — MapLibre vector (OSM) / raster satellite (Esri) */}
       <div className="absolute inset-0 z-0">
-        <IndonesiaMap selected={selectedForMap} zoom={zoom} polygon={polygon} tile={tile} />
+        <MapLibreIndonesiaMap selected={selectedForMap} zoom={zoom} polygon={polygon} tile={tile} />
       </div>
 
       {/* Overlay — breadcrumb + dropdown, sisanya pointer-events-none agar zoom/pan map tetap klikable */}

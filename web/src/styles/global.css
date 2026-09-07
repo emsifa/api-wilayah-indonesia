@@ -14,9 +14,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Leaflet fix */
+/* Leaflet fix (kept for legacy IndonesiaMap.tsx) */
 .leaflet-container {
   font-family: var(--font-sans);
+}
+
+/* MapLibre */
+.maplibregl-map {
+  font-family: var(--font-sans);
+}
+.maplibregl-ctrl-top-left {
+  top: 4px;
+  left: 4px;
 }
 
 /* Scrollbar subtle */
