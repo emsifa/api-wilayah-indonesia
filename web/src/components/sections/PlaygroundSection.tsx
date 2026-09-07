@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { MapPin, Search, RotateCcw, ChevronRight, Map, Satellite } from "lucide-react";
 import { MapLibreIndonesiaMap, type TileType } from "../playground/MapLibreIndonesiaMap";
 import { DesktopDropdowns, MobileStackCarousel } from "../playground/RegionDropdowns";
-import type { Region } from "../playground/types";
+import type { Region, RegionDetail } from "../playground/types";
 import { normalizeRings } from "../playground/mapUtils";
 
 const BASE = "https://www.emsifa.com/api-wilayah-indonesia/v2";
@@ -18,12 +18,13 @@ type ApiPlace = {
   population?: number;
   total_area?: number;
   postal_code?: string;
+  has_path?: boolean;
   province?: { id: string; name: string };
   regency?: { id: string; name: string };
   district?: { id: string; name: string };
 };
 
-type ShortItem = { id: string; name: string; postal_code?: string };
+type ShortItem = { id: string; name: string; postal_code?: string; lat?: number; lng?: number; has_path?: boolean };
 
 function toRegion(p: ApiPlace | ShortItem): Region {
   return {
@@ -35,7 +36,30 @@ function toRegion(p: ApiPlace | ShortItem): Region {
   };
 }
 
+function toRegionDetail(p: ApiPlace, level: RegionDetail["level"]): RegionDetail {
+  return {
+    code: p.id,
+    name: p.name,
+    lat: p.lat ?? 0,
+    lng: p.lng ?? 0,
+    level,
+    capital: p.capital,
+    elv: p.elv,
+    tz: p.tz,
+    population: p.population,
+    total_area: p.total_area,
+    postal_code: p.postal_code,
+    has_path: p.has_path,
+    province: p.province,
+    regency: p.regency,
+    district: p.district,
+  };
+}
+
 function findRegion(code: string, list: Region[]): Region | null {
+  return list.find((r) => r.code === code) ?? null;
+}
+function findDetail(code: string, list: RegionDetail[]): RegionDetail | null {
   return list.find((r) => r.code === code) ?? null;
 }
 
@@ -46,13 +70,15 @@ export function PlaygroundSection() {
   const [villCode, setVillCode] = useState("");
 
   const [provinces, setProvinces] = useState<Region[]>([]);
+  const [provincesDetail, setProvincesDetail] = useState<RegionDetail[]>([]);
   const [regencies, setRegencies] = useState<Region[]>([]);
+  const [regenciesDetail, setRegenciesDetail] = useState<RegionDetail[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
   const [villages, setVillages] = useState<Region[]>([]);
 
-  // Detail untuk kecamatan & kelurahan yang dipilih (punya lat/lng)
-  const [selectedDist, setSelectedDist] = useState<Region | null>(null);
-  const [selectedVill, setSelectedVill] = useState<Region | null>(null);
+  // Detail untuk kecamatan & kelurahan yang dipilih (punya lat/lng + full data)
+  const [selectedDist, setSelectedDist] = useState<RegionDetail | null>(null);
+  const [selectedVill, setSelectedVill] = useState<RegionDetail | null>(null);
 
   // polygon multi-ring: [ [ [lat,lng], ... ], [ [lat,lng], ... ] ] untuk Jakarta dkk
   const [polygon, setPolygon] = useState<[number, number][][] | null>(null);
@@ -77,6 +103,7 @@ export function PlaygroundSection() {
         if (cancelled) return;
         const list: ApiPlace[] = json.data;
         setProvinces(list.map(toRegion));
+        setProvincesDetail(list.map((p) => toRegionDetail(p, 1)));
         setFetchMs(Math.round(performance.now() - t0));
       })
       .catch(() => {
@@ -97,6 +124,7 @@ export function PlaygroundSection() {
   useEffect(() => {
     if (!provCode) {
       setRegencies([]);
+      setRegenciesDetail([]);
       return;
     }
     let cancelled = false;
@@ -108,6 +136,7 @@ export function PlaygroundSection() {
         if (cancelled) return;
         const list: ApiPlace[] = json.data;
         setRegencies(list.map(toRegion));
+        setRegenciesDetail(list.map((p) => toRegionDetail(p, 2)));
         setFetchMs(Math.round(performance.now() - t0));
       })
       .catch(() => {
@@ -186,7 +215,7 @@ export function PlaygroundSection() {
     };
   }, [distCode]);
 
-  // Fetch detail kecamatan terpilih (lat/lng)
+  // Fetch detail kecamatan terpilih (full data untuk popup)
   useEffect(() => {
     if (!distCode) {
       setSelectedDist(null);
@@ -198,13 +227,13 @@ export function PlaygroundSection() {
       .then((json) => {
         if (cancelled) return;
         const d: ApiPlace = json.data;
-        setSelectedDist({ code: d.id, name: d.name, lat: d.lat ?? 0, lng: d.lng ?? 0 });
+        setSelectedDist(toRegionDetail(d, 3));
       })
       .catch(() => { if (!cancelled) setSelectedDist(null); });
     return () => { cancelled = true; };
   }, [distCode]);
 
-  // Fetch detail kelurahan terpilih (lat/lng)
+  // Fetch detail kelurahan terpilih (full data untuk popup)
   useEffect(() => {
     if (!villCode) {
       setSelectedVill(null);
@@ -216,7 +245,7 @@ export function PlaygroundSection() {
       .then((json) => {
         if (cancelled) return;
         const v: ApiPlace = json.data;
-        setSelectedVill({ code: v.id, name: v.name, lat: v.lat ?? 0, lng: v.lng ?? 0 });
+        setSelectedVill(toRegionDetail(v, 4));
       })
       .catch(() => { if (!cancelled) setSelectedVill(null); });
     return () => { cancelled = true; };
@@ -259,6 +288,20 @@ export function PlaygroundSection() {
     if (prov) return prov;
     return null;
   }, [provCode, regCode, distCode, villCode, provinces, regencies, selectedDist, selectedVill]);
+
+  const selectedDetail: RegionDetail | null = useMemo(() => {
+    if (villCode && selectedVill) return selectedVill;
+    if (distCode && selectedDist) return selectedDist;
+    if (regCode) {
+      const d = findDetail(regCode, regenciesDetail);
+      if (d) return d;
+    }
+    if (provCode) {
+      const d = findDetail(provCode, provincesDetail);
+      if (d) return d;
+    }
+    return null;
+  }, [provCode, regCode, distCode, villCode, provincesDetail, regenciesDetail, selectedDist, selectedVill]);
 
   // Badge tetap tampilkan kecamatan/kelurahan terpilih (dari breadcrumb)
   const selectedForBadge: Region | null = useMemo(() => {
@@ -314,7 +357,7 @@ export function PlaygroundSection() {
     >
       {/* Full-size map — MapLibre vector (OSM) / raster satellite (Esri) */}
       <div className="absolute inset-0 z-0">
-        <MapLibreIndonesiaMap selected={selectedForMap} zoom={zoom} polygon={polygon} tile={tile} />
+        <MapLibreIndonesiaMap selected={selectedForMap} detail={selectedDetail} zoom={zoom} polygon={polygon} tile={tile} />
       </div>
 
       {/* Overlay — breadcrumb + dropdown, sisanya pointer-events-none agar zoom/pan map tetap klikable */}

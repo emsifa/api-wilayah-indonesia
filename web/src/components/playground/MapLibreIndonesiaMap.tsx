@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import type { Region } from "./types";
+import type { Region, RegionDetail } from "./types";
 import { toLngLat } from "./mapUtils";
+import { buildPopupEl } from "./RegionPopup";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -77,11 +78,13 @@ function useIsMobile(breakpoint = 768) {
 
 export function MapLibreIndonesiaMap({
   selected,
+  detail,
   zoom,
   polygon,
   tile = "osm",
 }: {
   selected: Region | null;
+  detail?: RegionDetail | null;
   zoom: number;
   polygon?: [number, number][][] | null;
   tile?: TileType;
@@ -89,6 +92,7 @@ export function MapLibreIndonesiaMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markerRef = useRef<maplibregl.Marker | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
   const isMobile = useIsMobile();
 
   // Track if map is loaded
@@ -208,7 +212,7 @@ export function MapLibreIndonesiaMap({
     };
   }, [tile]);
 
-  // Handle selected marker
+  // Handle selected marker + custom popup (auto-open tiap ganti wilayah)
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -218,25 +222,57 @@ export function MapLibreIndonesiaMap({
       markerRef.current.remove();
       markerRef.current = null;
     }
+    if (popupRef.current) {
+      popupRef.current.remove();
+      popupRef.current = null;
+    }
 
     if (!selected) return;
 
-    const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-      `<span style="font-weight:600">${selected.name}</span><br/><span style="font-family:monospace;font-size:12px">${selected.code}</span>`,
-    );
-
     const marker = new maplibregl.Marker({ color: "#059669" })
       .setLngLat([selected.lng, selected.lat])
-      .setPopup(popup)
+      .addTo(map);
+    markerRef.current = marker;
+
+    // Build popup content — pakai detail lengkap jika ada, fallback ke selected minimal
+    const popupDetail: RegionDetail | null =
+      detail ??
+      ({
+        code: selected.code,
+        name: selected.name,
+        lat: selected.lat,
+        lng: selected.lng,
+        level: 1 as const,
+      } as RegionDetail);
+
+    const contentEl = buildPopupEl(popupDetail);
+
+    const popup = new maplibregl.Popup({
+      offset: 25,
+      maxWidth: "340px",
+      className: "custom-tailwind-popup",
+      closeButton: false,
+      closeOnClick: false,
+    })
+      .setLngLat([selected.lng, selected.lat])
+      .setDOMContent(contentEl)
       .addTo(map);
 
-    markerRef.current = marker;
+    popupRef.current = popup;
+
+    // Klik marker toggle popup
+    marker.getElement().addEventListener("click", () => {
+      if (popupRef.current?.isOpen()) popupRef.current.remove();
+      else popup.addTo(map);
+    });
 
     return () => {
       marker.remove();
+      popup.remove();
       if (markerRef.current === marker) markerRef.current = null;
+      if (popupRef.current === popup) popupRef.current = null;
     };
-  }, [selected]);
+  }, [selected, detail]);
 
   // Handle flyTo
   useEffect(() => {
@@ -377,7 +413,7 @@ export function MapLibreIndonesiaMap({
         }
       }
       if (bounds.isEmpty()) return;
-      map.fitBounds(bounds, { padding: 24, maxZoom: 14, duration: 1000 });
+      map.fitBounds(bounds, { padding: 24, maxZoom: 19, duration: 1000 });
     };
 
     // Wait for flyTo to finish if animating, similar to Leaflet's moveend logic

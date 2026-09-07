@@ -28,6 +28,33 @@ body {
   left: 4px;
 }
 
+/* Custom popup — dark rounded & tailwind styling */
+.maplibregl-popup.custom-tailwind-popup .maplibregl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 20px;
+}
+.maplibregl-popup.custom-tailwind-popup .maplibregl-popup-tip {
+  border-top-color: #0f172a;
+}
+.maplibregl-popup.custom-tailwind-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: #0f172a;
+  border-bottom-color: transparent;
+}
+.maplibregl-popup.custom-tailwind-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: #0f172a;
+  border-top-color: transparent;
+}
+.maplibregl-popup.custom-tailwind-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #0f172a;
+  border-left-color: transparent;
+}
+.maplibregl-popup.custom-tailwind-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #0f172a;
+  border-right-color: transparent;
+}
+
 /* Scrollbar subtle */
 ::-webkit-scrollbar {
   width: 6px;
